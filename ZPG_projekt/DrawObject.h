@@ -11,9 +11,9 @@ private:
 	glm::vec3 scales{ 1.f };
 	Model* model;
 	ShaderManager* shader;
+	glm::mat4 transform();
 public:
 	DrawObject(Model* model, ShaderManager* shader);
 	void draw();
 	void rotate(glm::vec3 angle);
-	glm::mat4 transform();
 };

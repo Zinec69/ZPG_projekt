@@ -8,11 +8,11 @@ class ShaderManager
 private:
 	std::vector<GLuint> shaders;
 	GLuint shaderProgram;
-public:
-	ShaderManager();
 	void addShader(const char* shader_code, int type);
 	void createProgram();
-	void useProgram();
 	void pollInfoLogs();
+public:
+	ShaderManager();
+	void useProgram();
 	void transform(glm::mat4 position);
 };

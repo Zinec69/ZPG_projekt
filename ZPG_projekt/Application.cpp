@@ -54,7 +54,7 @@ void Application::loop()
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		this->drawObjects[2]->rotate(glm::vec3(0, 0, -0.01));
+		this->drawObjects[2]->rotate(glm::vec3(-0.1, 0, 0));
 
 		for (int i = 0; i < this->drawObjects.size(); i++)
 		{
