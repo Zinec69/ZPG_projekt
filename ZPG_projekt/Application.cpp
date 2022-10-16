@@ -124,7 +124,7 @@ void Application::loop()
 		else if (Keyboard::key_pressed == GLFW_KEY_DOWN) x_rot = -0.02;
 		else x_rot = 0;
 
-		this->drawObjects[0]->rotate(glm::vec3(0, 0, -0.02));
+		this->drawObjects[0]->rotate(glm::vec3(0, 0, -0.02), { -0.1, 0.5, 0.5 });
 		this->drawObjects[1]->rotate(glm::vec3(0, -0.05, 0));
 		this->drawObjects[2]->rotate(glm::vec3(x_rot, y_rot, 0));
 

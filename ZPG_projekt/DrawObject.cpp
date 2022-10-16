@@ -51,6 +51,15 @@ void DrawObject::rotate(glm::vec3 multiplier)
 	this->object = glm::rotate(this->object, multiplier[2], { 0.f, 0.f, 1.f });
 }
 
+void DrawObject::rotate(glm::vec3 multiplier, glm::vec3 point)
+{
+	this->object = glm::translate(this->object, point);
+	this->object = glm::rotate(this->object, multiplier[0], { 1.f, 0.f, 0.f });
+	this->object = glm::rotate(this->object, multiplier[1], { 0.f, 1.f, 0.f });
+	this->object = glm::rotate(this->object, multiplier[2], { 0.f, 0.f, 1.f });
+	this->object = glm::translate(this->object, -point);
+}
+
 void DrawObject::resize(glm::vec3 multiplier)
 {
 	this->object = glm::scale(this->object, multiplier);

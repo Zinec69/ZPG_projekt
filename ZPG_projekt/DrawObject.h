@@ -17,5 +17,6 @@ public:
 	DrawObject(Model* model, ShaderManager* shader);
 	void draw();
 	void rotate(glm::vec3 multiplier);
+	void rotate(glm::vec3 multiplier, glm::vec3 point);
 	void resize(glm::vec3 multiplier);
 };
