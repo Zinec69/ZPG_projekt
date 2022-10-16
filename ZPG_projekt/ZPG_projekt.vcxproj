@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="CallbackHandler.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="DrawObject.h" />
     <ClInclude Include="GLincludes.h" />
     <ClInclude Include="Model.h" />
@@ -30,6 +31,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="CallbackHandler.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DrawObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />

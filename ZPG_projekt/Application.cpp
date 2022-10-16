@@ -26,15 +26,75 @@ Application::Application(int windowWidth, int windowHeight)
 	};
 
 	const colorPoints rectangle[] = {
-		{{ -0.5, -0.5, 0.5, 1.5 }, { 0, 0.5, 0.5, 1 }},
-		{{ 0.5, -0.5, 0.5, 1.5 }, { 1, 0, 0.5, 1 }},
-		{{ 0.5, 0.5, 0.5, 1.5 }, { 0.25, 0, 0, 1 }},
-		{{ -0.5, 0.5, 0.5, 1.5 }, { 1, 1, 0, 1 }}
+		{{ -0.5, -0.5, 0, 1.5 }, { 0, 0.5, 0.5, 1 }},
+		{{ 0.5, -0.5, 0, 1.5 }, { 1, 0, 0.5, 1 }},
+		{{ 0.5, 0.5, 0, 1.5 }, { 0.25, 0, 0, 1 }},
+
+		{{ 0.5, 0.5, 0, 1.5 }, { 0.25, 0, 0, 1 }},
+		{{ -0.5, 0.5, 0, 1.5 }, { 1, 1, 0, 1 }},
+		{{ -0.5, -0.5, 0, 1.5 }, { 0, 0.5, 0.5, 1 }},
 	};
 
-	Model* model_1 = new Model(triangle1, sizeof(triangle1), sizeof(triangle1) / sizeof(triangle1[0]));
-	Model* model_2 = new Model(triangle2, sizeof(triangle2), sizeof(triangle2) / sizeof(triangle2[0]));
-	Model* model_3 = new Model(rectangle, sizeof(rectangle), sizeof(rectangle) / sizeof(rectangle[0]));
+	const colorPoints cube[] = {
+		//front
+		{{ -0.5, -0.5, 0, 1.5 }, { 0, 0.5, 0.5, 1 }},
+		{{ 0.5, -0.5, 0, 1.5 }, { 1, 0, 0.5, 1 }},
+		{{ 0.5, 0.5, 0, 1.5 }, { 0.25, 0, 0, 1 }},
+
+		{{ 0.5, 0.5, 0, 1.5 }, { 0.25, 0, 0, 1 }},
+		{{ -0.5, 0.5, 0, 1.5 }, { 1, 1, 0, 1 }},
+		{{ -0.5, -0.5, 0, 1.5 }, { 0, 0.5, 0.5, 1 }},
+
+		//left
+		{{ -0.5, -0.5, 0, 1.5 }, { 0, 0.5, 0.5, 1 }},
+		{{ -0.5, -0.5, 1, 1.5 }, { 1, 0, 0.5, 1 }},
+		{{ -0.5, 0.5, 1, 1.5 }, { 0.25, 0, 0, 1 }},
+
+		{{ -0.5, 0.5, 1, 1.5 }, { 0.25, 0, 0, 1 }},
+		{{ -0.5, 0.5, 0, 1.5 }, { 1, 1, 0, 1 }},
+		{{ -0.5, -0.5, 0, 1.5 }, { 0, 0.5, 0.5, 1 }},
+
+		//lower
+		{{ -0.5, -0.5, 0, 1.5 }, { 0, 0.5, 0.5, 1 }},
+		{{ 0.5, -0.5, 0, 1.5 }, { 1, 0, 0.5, 1 }},
+		{{ 0.5, -0.5, 1, 1.5 }, { 0.25, 0, 0, 1 }},
+
+		{{ 0.5, -0.5, 1, 1.5 }, { 0.25, 0, 0, 1 }},
+		{{ -0.5, -0.5, 1, 1.5 }, { 1, 1, 0, 1 }},
+		{{ -0.5, -0.5, 0, 1.5 }, { 0, 0.5, 0.5, 1 }},
+
+		//right
+		{{ 0.5, -0.5, 0, 1.5 }, { 0, 0.5, 0.5, 1 }},
+		{{ 0.5, -0.5, 1, 1.5 }, { 1, 0, 0.5, 1 }},
+		{{ 0.5, 0.5, 1, 1.5 }, { 0.25, 0, 0, 1 }},
+
+		{{ 0.5, 0.5, 1, 1.5 }, { 0.25, 0, 0, 1 }},
+		{{ 0.5, 0.5, 0, 1.5 }, { 1, 1, 0, 1 }},
+		{{ 0.5, -0.5, 0, 1.5 }, { 0, 0.5, 0.5, 1 }},
+
+		//back
+		{{ -0.5, -0.5, 1, 1.5 }, { 0, 0.5, 0.5, 1 }},
+		{{ 0.5, -0.5, 1, 1.5 }, { 1, 0, 0.5, 1 }},
+		{{ 0.5, 0.5, 1, 1.5 }, { 0.25, 0, 0, 1 }},
+
+		{{ 0.5, 0.5, 1, 1.5 }, { 0.25, 0, 0, 1 }},
+		{{ -0.5, 0.5, 1, 1.5 }, { 1, 1, 0, 1 }},
+		{{ -0.5, -0.5, 1, 1.5 }, { 0, 0.5, 0.5, 1 }},
+
+		//upper
+		{{ -0.5, 0.5, 0, 1.5 }, { 0, 0.5, 0.5, 1 }},
+		{{ 0.5, 0.5, 0, 1.5 }, { 1, 0, 0.5, 1 }},
+		{{ 0.5, 0.5, 1, 1.5 }, { 0.25, 0, 0, 1 }},
+
+		{{ 0.5, 0.5, 1, 1.5 }, { 0.25, 0, 0, 1 }},
+		{{ -0.5, 0.5, 1, 1.5 }, { 1, 1, 0, 1 }},
+		{{ -0.5, 0.5, 0, 1.5 }, { 0, 0.5, 0.5, 1 }},
+	};
+
+	Model* model_1 = new Model(triangle1, sizeof(triangle1), sizeof(triangle1) / sizeof(colorPoints));
+	Model* model_2 = new Model(triangle2, sizeof(triangle2), sizeof(triangle2) / sizeof(colorPoints));
+	Model* model_3 = new Model(cube, sizeof(cube), sizeof(cube) / sizeof(colorPoints));
+
 	ShaderManager* shaders = new ShaderManager();
 
 	DrawObject* drawObject_1 = new DrawObject(model_1, shaders);
@@ -50,11 +110,23 @@ Application::Application(int windowWidth, int windowHeight)
 
 void Application::loop()
 {
+	float x_rot = 0, y_rot = 0;
 	while (!this->window->shouldClose())
 	{
+		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		this->drawObjects[2]->rotate(glm::vec3(-0.1, 0, 0));
+		if (Keyboard::key_pressed == GLFW_KEY_LEFT) y_rot = 0.02;
+		else if (Keyboard::key_pressed == GLFW_KEY_RIGHT) y_rot = -0.02;
+		else y_rot = 0;
+
+		if (Keyboard::key_pressed == GLFW_KEY_UP) x_rot = 0.02;
+		else if (Keyboard::key_pressed == GLFW_KEY_DOWN) x_rot = -0.02;
+		else x_rot = 0;
+
+		this->drawObjects[0]->rotate(glm::vec3(0, 0, -0.02));
+		this->drawObjects[1]->rotate(glm::vec3(0, -0.05, 0));
+		this->drawObjects[2]->rotate(glm::vec3(x_rot, y_rot, 0));
 
 		for (int i = 0; i < this->drawObjects.size(); i++)
 		{

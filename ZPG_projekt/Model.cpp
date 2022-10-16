@@ -33,5 +33,5 @@ void Model::createVBO()
 void Model::draw()
 {
 	glBindVertexArray(this->VAO);
-	glDrawArrays(GL_POLYGON, 0, this->num_of_vertices);
+	glDrawArrays(GL_TRIANGLES, 0, this->num_of_vertices);
 }

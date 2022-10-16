@@ -15,27 +15,8 @@ void ShaderManager::addShader(const char* shader_code, int type)
 
 void ShaderManager::createProgram()
 {
-	const char* vertex_shader =
-		"#version 330\n"
-		"layout(location=0) in vec4 vp;"
-		"layout(location=1) in vec4 vc;"
-		"out vec4 color;"
-		"uniform mat4 modelMatrix;"
-		"void main () {"
-		"	gl_Position = modelMatrix * vec4(vp);"
-		"	color = vc;"
-		"}";
-
-	const char* fragment_shader =
-		"#version 330\n"
-		"out vec4 frag_colour;"
-		"in vec4 color;"
-		"void main () {"
-		"	frag_colour = vec4(color);"
-		"}";
-
-	addShader(vertex_shader, GL_VERTEX_SHADER);
-	addShader(fragment_shader, GL_FRAGMENT_SHADER);
+	addShader(this->vertex_shader_code, GL_VERTEX_SHADER);
+	addShader(this->fragment_shader_code, GL_FRAGMENT_SHADER);
 
 	this->shaderProgram = glCreateProgram();
 	for (int i = 0; i < this->shaders.size(); i++)
@@ -65,8 +46,17 @@ void ShaderManager::pollInfoLogs()
 	}
 }
 
-void ShaderManager::transform(glm::mat4 position)
+void ShaderManager::transform(glm::mat4 modelMatrix, glm::mat4 projectionMatrix, glm::mat4 viewMatrix)
 {
 	GLint modelId = glGetUniformLocation(this->shaderProgram, "modelMatrix");
-	glUniformMatrix4fv(modelId, 1, GL_FALSE, &position[0][0]);
+	if (modelId == -1) fprintf(stderr, "Failed getting model matrix\n");
+	glUniformMatrix4fv(modelId, 1, GL_FALSE, &modelMatrix[0][0]);
+
+	modelId = glGetUniformLocation(this->shaderProgram, "projectionMatrix");
+	if (modelId == -1) fprintf(stderr, "Failed getting projection matrix\n");
+	glUniformMatrix4fv(modelId, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+	modelId = glGetUniformLocation(this->shaderProgram, "viewMatrix");
+	if (modelId == -1) fprintf(stderr, "Failed getting view matrix\n");
+	glUniformMatrix4fv(modelId, 1, GL_FALSE, &viewMatrix[0][0]);
 }
