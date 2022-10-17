@@ -13,6 +13,8 @@ private:
 	glm::vec3 eye{ 0.f, 0.f, 4.f };
 	glm::vec3 target{ 0.f, 0.f, -1.f };
 	glm::vec3 up{ 0.f, 1.f, 0.f };
+	float yaw = -90;
+	float pitch = 0;
 
 	Model* model;
 	ShaderManager* shader;

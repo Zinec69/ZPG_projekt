@@ -27,6 +27,27 @@ void DrawObject::draw()
 	if (Keyboard::key_pressed == GLFW_KEY_D)
 		this->eye += glm::normalize(glm::cross(this->target, this->up)) * cameraSpeed;
 
+	float x_offset = Mouse::x - Mouse::previous_x;
+	float y_offset = Mouse::previous_y - Mouse::y;
+
+	const float sensitivity = 0.1f;
+	x_offset *= sensitivity;
+	y_offset *= sensitivity;
+
+	this->yaw += x_offset;
+	this->pitch += y_offset;
+
+	if (this->pitch > 89.0f)
+		this->pitch = 89.0f;
+	if (this->pitch < -89.0f)
+		this->pitch = -89.0f;
+
+	glm::vec3 direction;
+	direction.x = cos(glm::radians(this->yaw)) * cos(glm::radians(this->pitch));
+	direction.y = sin(glm::radians(this->pitch));
+	direction.z = sin(glm::radians(this->yaw)) * cos(glm::radians(this->pitch));
+	this->target = glm::normalize(direction);
+
 	glm::mat4 view = glm::lookAt(this->eye, this->eye + this->target, this->up);
 
 	glEnable(GL_DEPTH_TEST);
