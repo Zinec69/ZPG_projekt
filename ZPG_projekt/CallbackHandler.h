@@ -9,8 +9,6 @@ class Mouse
 public:
 	static int x;
 	static int y;
-	static int previous_x;
-	static int previous_y;
 	static int button_clicked;
 	Mouse() {};
 };

@@ -10,8 +10,7 @@ void DrawObject::draw()
 {
 	this->shader->useProgram();
 
-	glm::mat4 perspective = glm::perspective(glm::radians(45.0f), 800.f / 600.f, 0.1f, 100.0f);
-	// glm::mat4 perspective = glm::mat4( 1.f );
+	glm::mat4 perspective = glm::perspective(glm::radians(90.0f), 800.f / 600.f, 0.1f, 100.0f);
 
 	const float radius = 10.0f;
 	float camX = sin(glfwGetTime()) * radius;
@@ -27,8 +26,11 @@ void DrawObject::draw()
 	if (Keyboard::key_pressed == GLFW_KEY_D)
 		this->eye += glm::normalize(glm::cross(this->target, this->up)) * cameraSpeed;
 
-	float x_offset = Mouse::x - Mouse::previous_x;
-	float y_offset = Mouse::previous_y - Mouse::y;
+	float x_offset = Mouse::x - this->mouse_last_x;
+	float y_offset = this->mouse_last_y - Mouse::y;
+
+	this->mouse_last_x = Mouse::x;
+	this->mouse_last_y = Mouse::y;
 
 	const float sensitivity = 0.1f;
 	x_offset *= sensitivity;

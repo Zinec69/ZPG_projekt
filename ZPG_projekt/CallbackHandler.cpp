@@ -2,8 +2,6 @@
 
 int Mouse::x = -1;
 int Mouse::y = -1;
-int Mouse::previous_x = 400;
-int Mouse::previous_y = 300;
 int Mouse::button_clicked = -1;
 int Keyboard::key_pressed = -1;
 int Keyboard::key_action = -1;
@@ -41,8 +39,6 @@ void CallbackHandler::window_size_callback(GLFWwindow* window, int width, int he
 
 void CallbackHandler::cursor_callback(GLFWwindow* window, double x, double y)
 {
-	mouse->previous_x = mouse->x;
-	mouse->previous_y = mouse->y;
 	mouse->x = x;
 	mouse->y = y;
 }

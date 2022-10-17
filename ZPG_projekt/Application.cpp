@@ -125,7 +125,7 @@ void Application::run()
 
 		this->drawObjects[0]->rotate(glm::vec3(0, 0, -0.02), glm::vec3(-0.1, 0.5, 0.5));
 		this->drawObjects[1]->rotate(glm::vec3(0, -0.05, 0));
-		this->drawObjects[2]->rotate(glm::vec3(x_rot, y_rot, 0), glm::vec3(0, 0, 0.5));
+		this->drawObjects[2]->rotate(glm::vec3(x_rot, y_rot, 0), glm::vec3(-0.5, 0.5, 1));
 
 		for (int i = 0; i < this->drawObjects.size(); i++)
 		{

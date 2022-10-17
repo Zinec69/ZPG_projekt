@@ -14,7 +14,9 @@ private:
 	glm::vec3 target{ 0.f, 0.f, -1.f };
 	glm::vec3 up{ 0.f, 1.f, 0.f };
 	float yaw = -90;
-	float pitch = 0;
+	float pitch = 1;
+	int mouse_last_x = 400;
+	int mouse_last_y = 300;
 
 	Model* model;
 	ShaderManager* shader;
