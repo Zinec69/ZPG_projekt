@@ -108,12 +108,11 @@ Application::Application(int windowWidth, int windowHeight)
 	printInfo();
 }
 
-void Application::loop()
+void Application::run()
 {
 	float x_rot = 0, y_rot = 0;
 	while (!this->window->shouldClose())
 	{
-		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		if (Keyboard::key_pressed == GLFW_KEY_LEFT) y_rot = 0.02;
@@ -124,9 +123,9 @@ void Application::loop()
 		else if (Keyboard::key_pressed == GLFW_KEY_DOWN) x_rot = -0.02;
 		else x_rot = 0;
 
-		this->drawObjects[0]->rotate(glm::vec3(0, 0, -0.02), { -0.1, 0.5, 0.5 });
+		this->drawObjects[0]->rotate(glm::vec3(0, 0, -0.02), glm::vec3(-0.1, 0.5, 0.5));
 		this->drawObjects[1]->rotate(glm::vec3(0, -0.05, 0));
-		this->drawObjects[2]->rotate(glm::vec3(x_rot, y_rot, 0));
+		this->drawObjects[2]->rotate(glm::vec3(x_rot, y_rot, 0), glm::vec3(0, 0, 0.5));
 
 		for (int i = 0; i < this->drawObjects.size(); i++)
 		{

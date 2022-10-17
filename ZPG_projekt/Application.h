@@ -14,5 +14,5 @@ private:
 public:
 	Application(int windowWidth, int windowHeight);
 	~Application();
-	void loop();
+	void run();
 };

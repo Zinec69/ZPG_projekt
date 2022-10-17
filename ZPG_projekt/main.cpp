@@ -3,7 +3,7 @@
 int main()
 {
 	Application application(800, 600);
-	application.loop();
+	application.run();
 
 	return 0;
 }

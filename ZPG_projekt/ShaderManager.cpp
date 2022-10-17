@@ -50,13 +50,13 @@ void ShaderManager::transform(glm::mat4 modelMatrix, glm::mat4 projectionMatrix,
 {
 	GLint modelId = glGetUniformLocation(this->shaderProgram, "modelMatrix");
 	if (modelId == -1) fprintf(stderr, "Failed getting model matrix\n");
-	glUniformMatrix4fv(modelId, 1, GL_FALSE, &modelMatrix[0][0]);
+	else glUniformMatrix4fv(modelId, 1, GL_FALSE, &modelMatrix[0][0]);
 
 	modelId = glGetUniformLocation(this->shaderProgram, "projectionMatrix");
 	if (modelId == -1) fprintf(stderr, "Failed getting projection matrix\n");
-	glUniformMatrix4fv(modelId, 1, GL_FALSE, &projectionMatrix[0][0]);
+	else glUniformMatrix4fv(modelId, 1, GL_FALSE, &projectionMatrix[0][0]);
 
 	modelId = glGetUniformLocation(this->shaderProgram, "viewMatrix");
 	if (modelId == -1) fprintf(stderr, "Failed getting view matrix\n");
-	glUniformMatrix4fv(modelId, 1, GL_FALSE, &viewMatrix[0][0]);
+	else glUniformMatrix4fv(modelId, 1, GL_FALSE, &viewMatrix[0][0]);
 }
