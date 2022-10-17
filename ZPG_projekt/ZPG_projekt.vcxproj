@@ -25,6 +25,7 @@
     <ClInclude Include="DrawObject.h" />
     <ClInclude Include="GLincludes.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="Models.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

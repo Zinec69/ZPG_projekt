@@ -2,7 +2,7 @@
 
 int main()
 {
-	Application application(800, 600);
+	Application application(WINDOW_WIDTH, WINDOW_HEIGHT);
 	application.run();
 
 	return 0;

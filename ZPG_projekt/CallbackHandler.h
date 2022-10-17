@@ -6,19 +6,25 @@
 
 class Mouse
 {
+private:
+	Mouse() {};
 public:
 	static int x;
 	static int y;
 	static int button_clicked;
-	Mouse() {};
+	Mouse(Mouse const&) = delete;
+	Mouse& operator = (Mouse const&) = delete;
 };
 
 class Keyboard
 {
+private:
+	Keyboard() {};
 public:
 	static int key_pressed;
 	static int key_action;
-	Keyboard() {};
+	Keyboard(Keyboard const&) = delete;
+	Keyboard& operator = (Keyboard const&) = delete;
 };
 
 class CallbackHandler

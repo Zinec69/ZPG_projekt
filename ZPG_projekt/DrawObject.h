@@ -2,6 +2,7 @@
 
 #include "Model.h"
 #include "ShaderManager.h"
+#include "Camera.h"
 
 class DrawObject
 {
@@ -10,13 +11,6 @@ private:
 	glm::vec3 rotation{ 0.f };
 	glm::vec3 scales{ 1.f };
 	glm::mat4 object{ 1.f };
-	glm::vec3 eye{ 0.f, 0.f, 4.f };
-	glm::vec3 target{ 0.f, 0.f, -1.f };
-	glm::vec3 up{ 0.f, 1.f, 0.f };
-	float yaw = -90;
-	float pitch = 1;
-	int mouse_last_x = 400;
-	int mouse_last_y = 300;
 
 	Model* model;
 	ShaderManager* shader;
