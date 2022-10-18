@@ -31,6 +31,16 @@ void Window::swapBuffers()
 	glfwSwapBuffers(this->window);
 }
 
+void Window::lockCursor()
+{
+	glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
+
+void Window::unlockCursor()
+{
+	glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+}
+
 int Window::shouldClose()
 {
 	return glfwWindowShouldClose(this->window);
