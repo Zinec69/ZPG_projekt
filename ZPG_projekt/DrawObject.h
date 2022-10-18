@@ -2,7 +2,6 @@
 
 #include "Model.h"
 #include "ShaderManager.h"
-#include "Camera.h"
 
 class DrawObject
 {

@@ -46,7 +46,7 @@ void ShaderManager::pollInfoLogs()
 	}
 }
 
-void ShaderManager::transform(glm::mat4 modelMatrix, glm::mat4 projectionMatrix, glm::mat4 viewMatrix)
+void ShaderManager::transform(glm::mat4 modelMatrix)
 {
 	GLint modelId = glGetUniformLocation(this->shaderProgram, "modelMatrix");
 	if (modelId == -1) fprintf(stderr, "Failed getting model matrix\n");
@@ -54,9 +54,9 @@ void ShaderManager::transform(glm::mat4 modelMatrix, glm::mat4 projectionMatrix,
 
 	modelId = glGetUniformLocation(this->shaderProgram, "projectionMatrix");
 	if (modelId == -1) fprintf(stderr, "Failed getting projection matrix\n");
-	else glUniformMatrix4fv(modelId, 1, GL_FALSE, &projectionMatrix[0][0]);
+	else glUniformMatrix4fv(modelId, 1, GL_FALSE, &Camera::getPerspective()[0][0]);
 
 	modelId = glGetUniformLocation(this->shaderProgram, "viewMatrix");
 	if (modelId == -1) fprintf(stderr, "Failed getting view matrix\n");
-	else glUniformMatrix4fv(modelId, 1, GL_FALSE, &viewMatrix[0][0]);
+	else glUniformMatrix4fv(modelId, 1, GL_FALSE, &Camera::getCamera()[0][0]);
 }

@@ -10,13 +10,13 @@ private:
 	int width;
 	int height;
 	const char* name;
-	GLFWwindow* window;
+	static GLFWwindow* window;
 	void setViewport();
 public:
 	Window(int width, int height, const char* name);
 	~Window();
 	int shouldClose();
 	void swapBuffers();
-	void lockCursor();
-	void unlockCursor();
+	static void lockCursor();
+	static void unlockCursor();
 };

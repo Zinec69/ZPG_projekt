@@ -8,8 +8,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-constexpr int WINDOW_WIDTH = 1280;
-constexpr int WINDOW_HEIGHT = 720;
+//constexpr int WINDOW_WIDTH = 1280;
+//constexpr int WINDOW_HEIGHT = 720;
+
+extern const int WINDOW_WIDTH;
+extern const int WINDOW_HEIGHT;
 
 struct colorPoints
 {

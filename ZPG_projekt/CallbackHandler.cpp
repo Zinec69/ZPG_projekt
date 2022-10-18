@@ -3,6 +3,7 @@
 int Mouse::x = -1;
 int Mouse::y = -1;
 int Mouse::button_clicked = -1;
+int Mouse::scroll = 0;
 int Keyboard::key_pressed = -1;
 int Keyboard::key_action = -1;
 
@@ -39,8 +40,8 @@ void CallbackHandler::window_size_callback(GLFWwindow* window, int width, int he
 
 void CallbackHandler::cursor_callback(GLFWwindow* window, double x, double y)
 {
-	mouse->x = x;
-	mouse->y = y;
+	mouse->x = (int)x;
+	mouse->y = (int)y;
 }
 
 void CallbackHandler::button_callback(GLFWwindow* window, int button, int action, int mode)
@@ -49,6 +50,11 @@ void CallbackHandler::button_callback(GLFWwindow* window, int button, int action
 		mouse->button_clicked = button;
 	else
 		mouse->button_clicked = -1;
+}
+
+void CallbackHandler::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	mouse->scroll = (int)yoffset;
 }
 
 CallbackHandler::CallbackHandler(GLFWwindow* window)
@@ -64,5 +70,6 @@ CallbackHandler::CallbackHandler(GLFWwindow* window)
 		glfwSetWindowIconifyCallback(window, window_iconify_callback);
 		glfwSetCursorPosCallback(window, cursor_callback);
 		glfwSetMouseButtonCallback(window, button_callback);
+		glfwSetScrollCallback(window, scroll_callback);
 	}
 }

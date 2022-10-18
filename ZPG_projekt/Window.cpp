@@ -1,5 +1,7 @@
 #include "Window.h"
 
+GLFWwindow* Window::window = nullptr;
+
 Window::Window(int width, int height, const char* name)
 {
 	this->width = width;
@@ -33,12 +35,14 @@ void Window::swapBuffers()
 
 void Window::lockCursor()
 {
-	glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	if (window != nullptr)
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 void Window::unlockCursor()
 {
-	glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	if (window != nullptr)
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }
 
 int Window::shouldClose()

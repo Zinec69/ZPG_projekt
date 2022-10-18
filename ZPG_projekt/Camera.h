@@ -2,6 +2,7 @@
 
 #include "GLincludes.h"
 #include "CallbackHandler.h"
+#include "Window.h"
 
 class Camera
 {
@@ -13,11 +14,13 @@ private:
 	static float pitch;
 	static int mouse_last_x;
 	static int mouse_last_y;
+	static float FOV;
 public:
 	Camera() {};
 	static glm::mat4 getCamera();
 	static glm::mat4 getPerspective();
 	static void move();
+
 	Camera(Camera const&) = delete;
 	Camera& operator = (Camera const&) = delete;
 };

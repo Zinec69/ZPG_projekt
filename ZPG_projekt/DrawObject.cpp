@@ -12,7 +12,7 @@ void DrawObject::draw()
 
 	glEnable(GL_DEPTH_TEST);
 
-	this->shader->transform(this->object, Camera::getPerspective(), Camera::getCamera());
+	this->shader->transform(this->object);
 	this->model->draw();
 }
 
