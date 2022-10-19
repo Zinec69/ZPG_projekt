@@ -29,30 +29,29 @@ Application::Application(int windowWidth, int windowHeight)
 	this->drawObjects.push_back(drawObject_1);
 	this->drawObjects.push_back(drawObject_2);
 	this->drawObjects.push_back(drawObject_3);
-	this->drawObjects.push_back(drawObject_4);
+	//this->drawObjects.push_back(drawObject_4);
 
 	printInfo();
 }
 
 void Application::run()
 {
-	float x_rot = 0, y_rot = 0;
+	float x_rot = 0, y_rot = 0, tri_rot = 0;
 	while (!this->window->shouldClose())
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		if (Keyboard::key_pressed == GLFW_KEY_LEFT) y_rot = 0.02;
-		else if (Keyboard::key_pressed == GLFW_KEY_RIGHT) y_rot = -0.02;
-		else y_rot = 0;
+		if (Keyboard::key_pressed == GLFW_KEY_LEFT) y_rot += 1;
+		if (Keyboard::key_pressed == GLFW_KEY_RIGHT) y_rot -= 1;
 
-		if (Keyboard::key_pressed == GLFW_KEY_UP) x_rot = 0.02;
-		else if (Keyboard::key_pressed == GLFW_KEY_DOWN) x_rot = -0.02;
-		else x_rot = 0;
+		if (Keyboard::key_pressed == GLFW_KEY_UP) x_rot += 1;
+		if (Keyboard::key_pressed == GLFW_KEY_DOWN) x_rot -= 1;
 
-		this->drawObjects[0]->rotate(-0.02, glm::vec3(-0.1, 0.5, 0.5), glm::vec3(0, 0, 1));
-		this->drawObjects[1]->rotate(glm::vec3(0, -0.05, 0));
-		this->drawObjects[2]->rotate(x_rot, glm::vec3(0, 0, 0), glm::vec3(1, 0, 0));
-		// this->drawObjects[2]->rotate(y_rot, glm::vec3(-0.5, 1.5, 0), glm::vec3(0, 1, 0));
+		this->drawObjects[0]->rotate(tri_rot, glm::vec3(-0.1, 0.5, 0.5), glm::vec3(0, 0, 1));
+		this->drawObjects[1]->rotate(tri_rot, glm::vec3(0, 1, 0));
+		//this->drawObjects[2]->move(glm::vec3(1, 1, 0));
+		this->drawObjects[2]->rotate(x_rot, glm::vec3(1, 0, 0), glm::vec3(-0.5, 0.5, 0.5));
+		this->drawObjects[2]->rotate(y_rot, glm::vec3(0, 1, 0), glm::vec3(-0.5, 0.5, 0.5));
 
 		for (int i = 0; i < this->drawObjects.size(); i++)
 		{
@@ -61,6 +60,8 @@ void Application::run()
 
 		glfwPollEvents();
 		this->window->swapBuffers();
+
+		tri_rot--;
 	}
 }
 
