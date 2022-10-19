@@ -26,6 +26,7 @@
     <ClInclude Include="GLincludes.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Models.h" />
+    <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
@@ -36,6 +37,7 @@
     <ClCompile Include="DrawObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="ShaderLoader.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>

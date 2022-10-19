@@ -13,15 +13,22 @@ void ShaderManager::addShader(const char* shader_code, int type)
 	this->shaders.push_back(shader);
 }
 
+//void ShaderManager::createProgram()
+//{
+//	addShader(this->vertex_shader_code, GL_VERTEX_SHADER);
+//	addShader(this->fragment_shader_code, GL_FRAGMENT_SHADER);
+//
+//	this->shaderProgram = glCreateProgram();
+//	for (int i = 0; i < this->shaders.size(); i++)
+//		glAttachShader(this->shaderProgram, this->shaders[i]);
+//	glLinkProgram(this->shaderProgram);
+//	
+//	pollInfoLogs();
+//}
+
 void ShaderManager::createProgram()
 {
-	addShader(this->vertex_shader_code, GL_VERTEX_SHADER);
-	addShader(this->fragment_shader_code, GL_FRAGMENT_SHADER);
-
-	this->shaderProgram = glCreateProgram();
-	for (int i = 0; i < this->shaders.size(); i++)
-		glAttachShader(this->shaderProgram, this->shaders[i]);
-	glLinkProgram(this->shaderProgram);
+	this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex.txt", "../ZPG_projekt/Shaders/fragment.txt");
 
 	pollInfoLogs();
 }
@@ -49,14 +56,26 @@ void ShaderManager::pollInfoLogs()
 void ShaderManager::transform(glm::mat4 modelMatrix)
 {
 	GLint modelId = glGetUniformLocation(this->shaderProgram, "modelMatrix");
-	if (modelId == -1) fprintf(stderr, "Failed getting model matrix\n");
+	if (modelId == -1)
+	{
+		fprintf(stderr, "Failed getting model matrix\n");
+		exit(1);
+	}
 	else glUniformMatrix4fv(modelId, 1, GL_FALSE, &modelMatrix[0][0]);
 
 	modelId = glGetUniformLocation(this->shaderProgram, "projectionMatrix");
-	if (modelId == -1) fprintf(stderr, "Failed getting projection matrix\n");
+	if (modelId == -1)
+	{
+		fprintf(stderr, "Failed getting projection matrix\n");
+		exit(1);
+	}
 	else glUniformMatrix4fv(modelId, 1, GL_FALSE, &Camera::getPerspective()[0][0]);
 
 	modelId = glGetUniformLocation(this->shaderProgram, "viewMatrix");
-	if (modelId == -1) fprintf(stderr, "Failed getting view matrix\n");
+	if (modelId == -1)
+	{
+		fprintf(stderr, "Failed getting view matrix\n");
+		exit(1);
+	}
 	else glUniformMatrix4fv(modelId, 1, GL_FALSE, &Camera::getCamera()[0][0]);
 }

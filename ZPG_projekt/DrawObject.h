@@ -10,6 +10,7 @@ private:
 	glm::vec3 rotation{ 0.f };
 	glm::vec3 scales{ 1.f };
 	glm::mat4 object{ 1.f };
+	float angle = 5;
 
 	Model* model;
 	ShaderManager* shader;
@@ -18,6 +19,6 @@ public:
 	DrawObject(Model* model, ShaderManager* shader);
 	void draw();
 	void rotate(glm::vec3 rotation);
-	void rotate(glm::vec3 rotation, glm::vec3 point);
+	void rotate(float angle, glm::vec3 point, glm::vec3 axis);
 	void resize(glm::vec3 multiplier);
 };

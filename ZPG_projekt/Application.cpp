@@ -17,7 +17,7 @@ Application::Application(int windowWidth, int windowHeight)
 	Model* model_1 = new Model(triangle1, sizeof(triangle1), sizeof(triangle1) / sizeof(colorPoints));
 	Model* model_2 = new Model(triangle2, sizeof(triangle2), sizeof(triangle2) / sizeof(colorPoints));
 	Model* model_3 = new Model(cube, sizeof(cube), sizeof(cube) / sizeof(colorPoints));
-	Model* model_4 = new Model(suziSmooth, sizeof(suziSmooth), sizeof(suziSmooth) / sizeof(colorPoints));
+	Model* model_4 = new Model(sphere, sizeof(sphere), sizeof(sphere) / sizeof(colorPoints));
 
 	ShaderManager* shaders = new ShaderManager();
 
@@ -49,9 +49,10 @@ void Application::run()
 		else if (Keyboard::key_pressed == GLFW_KEY_DOWN) x_rot = -0.02;
 		else x_rot = 0;
 
-		this->drawObjects[0]->rotate(glm::vec3(0, 0, -0.02), glm::vec3(-0.1, 0.5, 0.5));
+		this->drawObjects[0]->rotate(-0.02, glm::vec3(-0.1, 0.5, 0.5), glm::vec3(0, 0, 1));
 		this->drawObjects[1]->rotate(glm::vec3(0, -0.05, 0));
-		this->drawObjects[2]->rotate(glm::vec3(x_rot, y_rot, 0), glm::vec3(-0.5, 1.5, 0));
+		this->drawObjects[2]->rotate(x_rot, glm::vec3(0, 0, 0), glm::vec3(1, 0, 0));
+		// this->drawObjects[2]->rotate(y_rot, glm::vec3(-0.5, 1.5, 0), glm::vec3(0, 1, 0));
 
 		for (int i = 0; i < this->drawObjects.size(); i++)
 		{

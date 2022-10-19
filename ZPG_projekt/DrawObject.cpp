@@ -30,13 +30,16 @@ void DrawObject::rotate(glm::vec3 rotation)
 	this->object = glm::rotate(this->object, rotation[2], { 0.f, 0.f, 1.f });
 }
 
-void DrawObject::rotate(glm::vec3 rotation, glm::vec3 point)
+void DrawObject::rotate(float angle, glm::vec3 point, glm::vec3 axis)
 {
-	this->object = glm::translate(this->object, point);
-	this->object = glm::rotate(this->object, rotation[0], { 1.f, 0.f, 0.f });
-	this->object = glm::rotate(this->object, rotation[1], { 0.f, 1.f, 0.f });
-	this->object = glm::rotate(this->object, rotation[2], { 0.f, 0.f, 1.f });
-	this->object = glm::translate(this->object, -point);
+	glm::mat4 m;
+
+	this->angle += 1;
+
+	m = glm::translate(glm::mat4{1.0}, point);
+	m = glm::rotate(m, glm::radians(this->angle), axis);
+	m = glm::translate(m, -point);
+	this->object = m;
 }
 
 void DrawObject::resize(glm::vec3 multiplier)
