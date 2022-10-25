@@ -67,6 +67,5 @@ private:
 		"}";
 public:
 	ShaderManager();
-	void useProgram();
-	void transform(glm::mat4 modelMatrix);
+	void useProgram(glm::mat4 modelMatrix);
 };

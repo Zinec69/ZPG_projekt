@@ -35,6 +35,10 @@ void Camera::move()
 		eye -= glm::normalize(glm::cross(target, up)) * cameraSpeed;
 	if (Keyboard::key_pressed == GLFW_KEY_D)
 		eye += glm::normalize(glm::cross(target, up)) * cameraSpeed;
+	if (Keyboard::key_pressed == GLFW_KEY_SPACE)
+		eye += up * cameraSpeed;
+	if (Keyboard::key_pressed == GLFW_KEY_LEFT_CONTROL)
+		eye -= up * cameraSpeed;
 
 	float x_offset = Mouse::x - mouse_last_x;
 	float y_offset = mouse_last_y - Mouse::y;

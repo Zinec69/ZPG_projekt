@@ -36,6 +36,8 @@ Application::Application(int windowWidth, int windowHeight)
 
 void Application::run()
 {
+	glEnable(GL_DEPTH_TEST);
+
 	float x_rot = 0, y_rot = 0, tri_rot = 0;
 	while (!this->window->shouldClose())
 	{
@@ -49,7 +51,7 @@ void Application::run()
 
 		this->drawObjects[0]->rotate(tri_rot, glm::vec3(-0.1, 0.5, 0.5), glm::vec3(0, 0, 1));
 		this->drawObjects[1]->rotate(tri_rot, glm::vec3(0, 1, 0));
-		//this->drawObjects[2]->move(glm::vec3(1, 1, 0));
+		this->drawObjects[2]->move(glm::vec3(-1, 1, -1));
 		this->drawObjects[2]->rotate(x_rot, glm::vec3(1, 0, 0), glm::vec3(-0.5, 0.5, 0.5));
 		this->drawObjects[2]->rotate(y_rot, glm::vec3(0, 1, 0), glm::vec3(-0.5, 0.5, 0.5));
 

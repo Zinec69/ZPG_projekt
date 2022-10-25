@@ -33,11 +33,6 @@ void ShaderManager::createProgram()
 	pollInfoLogs();
 }
 
-void ShaderManager::useProgram()
-{
-	glUseProgram(this->shaderProgram);
-}
-
 void ShaderManager::pollInfoLogs()
 {
 	GLint status;
@@ -53,8 +48,10 @@ void ShaderManager::pollInfoLogs()
 	}
 }
 
-void ShaderManager::transform(glm::mat4 modelMatrix)
+void ShaderManager::useProgram(glm::mat4 modelMatrix)
 {
+	glUseProgram(this->shaderProgram);
+
 	GLint modelId = glGetUniformLocation(this->shaderProgram, "modelMatrix");
 	if (modelId == -1)
 	{
