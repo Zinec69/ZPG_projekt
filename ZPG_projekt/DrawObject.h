@@ -2,18 +2,19 @@
 
 #include "Model.h"
 #include "ShaderManager.h"
+#include "Camera.h"
 
 class DrawObject
 {
 private:
-	glm::vec3 translation{ 0.f };
-	glm::vec3 rotation{ 0.f };
-	glm::vec3 scales{ 1.f };
-	glm::mat4 object{ 1.f };
+	glm::mat4 object{ 1.0 };
+	glm::vec3 color{ 1.0, 1.0, 0.0 };
+	glm::vec3 lightColor{ 1.0, 1.0, 1.0 };
+	float scale = 1;
 
 	Model* model;
 	ShaderManager* shader;
-	glm::mat4 transform();
+	void transform();
 public:
 	DrawObject(Model* model, ShaderManager* shader);
 	void draw();
@@ -21,4 +22,6 @@ public:
 	void rotate(float angle, glm::vec3 axis, glm::vec3 point);
 	void resize(glm::vec3 multiplier);
 	void move(glm::vec3 point);
+	void changeColor(glm::vec3 color);
+	void changeSize(float size);
 };

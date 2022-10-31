@@ -13,9 +13,3 @@
 
 extern const int WINDOW_WIDTH;
 extern const int WINDOW_HEIGHT;
-
-struct colorPoints
-{
-	float vertices[4];
-	float color[4];
-};

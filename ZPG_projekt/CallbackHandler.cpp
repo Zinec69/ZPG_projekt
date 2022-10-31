@@ -36,6 +36,7 @@ void CallbackHandler::window_iconify_callback(GLFWwindow* window, int iconified)
 void CallbackHandler::window_size_callback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
+	Camera::setPerspective(90, (float)width, (float)height);
 }
 
 void CallbackHandler::cursor_callback(GLFWwindow* window, double x, double y)

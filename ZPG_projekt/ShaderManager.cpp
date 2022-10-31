@@ -1,17 +1,38 @@
 #include "ShaderManager.h"
 
-ShaderManager::ShaderManager()
+ShaderManager::ShaderManager(shaderType type)
 {
-	createProgram();
+	this->type = type;
+
+	switch (this->type)
+	{
+	case BASIC:
+		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex_basic.txt", "../ZPG_projekt/Shaders/fragment_basic.txt");
+		break;
+	case LAMBERT:
+		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex_light.txt", "../ZPG_projekt/Shaders/fragment_lambert.txt");
+		break;
+	case PHONG:
+		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex_light.txt", "../ZPG_projekt/Shaders/fragment_phong.txt");
+		break;
+	case PHONG_1:
+		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex_light.txt", "../ZPG_projekt/Shaders/fragment_phong_1.txt");
+		break;
+	case BLINN:
+		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex_light.txt", "../ZPG_projekt/Shaders/fragment_blinn.txt");
+		break;
+	}
+
+	pollInfoLogs();
 }
 
-void ShaderManager::addShader(const char* shader_code, int type)
-{
-	GLuint shader = glCreateShader(type);
-	glShaderSource(shader, 1, &shader_code, NULL);
-	glCompileShader(shader);
-	this->shaders.push_back(shader);
-}
+//void ShaderManager::addShader(const char* shader_code, int type)
+//{
+//	GLuint shader = glCreateShader(type);
+//	glShaderSource(shader, 1, &shader_code, NULL);
+//	glCompileShader(shader);
+//	this->shaders.push_back(shader);
+//}
 
 //void ShaderManager::createProgram()
 //{
@@ -25,13 +46,6 @@ void ShaderManager::addShader(const char* shader_code, int type)
 //	
 //	pollInfoLogs();
 //}
-
-void ShaderManager::createProgram()
-{
-	this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex.txt", "../ZPG_projekt/Shaders/fragment.txt");
-
-	pollInfoLogs();
-}
 
 void ShaderManager::pollInfoLogs()
 {
@@ -48,31 +62,54 @@ void ShaderManager::pollInfoLogs()
 	}
 }
 
-void ShaderManager::useProgram(glm::mat4 modelMatrix)
+void ShaderManager::useProgram()
 {
 	glUseProgram(this->shaderProgram);
+}
 
-	GLint modelId = glGetUniformLocation(this->shaderProgram, "modelMatrix");
+void ShaderManager::useMat(glm::mat4 mat, const char name[])
+{
+	GLint modelId = glGetUniformLocation(this->shaderProgram, name);
 	if (modelId == -1)
 	{
-		fprintf(stderr, "Failed getting model matrix\n");
+		std::string err = "[Shader error] ";
+		err += name;
+		err += " matrix not found\n";
+		fprintf(stderr, err.c_str());
 		exit(1);
 	}
-	else glUniformMatrix4fv(modelId, 1, GL_FALSE, &modelMatrix[0][0]);
+	else glUniformMatrix4fv(modelId, 1, GL_FALSE, &mat[0][0]);
+}
 
-	modelId = glGetUniformLocation(this->shaderProgram, "projectionMatrix");
+void ShaderManager::useVec(glm::vec3 vec, const char name[])
+{
+	GLint modelId = glGetUniformLocation(this->shaderProgram, name);
 	if (modelId == -1)
 	{
-		fprintf(stderr, "Failed getting projection matrix\n");
+		std::string err = "[Shader error] ";
+		err += name;
+		err += " vector not found\n";
+		fprintf(stderr, err.c_str());
 		exit(1);
 	}
-	else glUniformMatrix4fv(modelId, 1, GL_FALSE, &Camera::getPerspective()[0][0]);
+	else glUniform3fv(modelId, 1, &vec[0]);
+}
 
-	modelId = glGetUniformLocation(this->shaderProgram, "viewMatrix");
+void ShaderManager::useFloat(float num, const char name[])
+{
+	GLint modelId = glGetUniformLocation(this->shaderProgram, name);
 	if (modelId == -1)
 	{
-		fprintf(stderr, "Failed getting view matrix\n");
+		std::string err = "[Shader error] ";
+		err += name;
+		err += " float not found\n";
+		fprintf(stderr, err.c_str());
 		exit(1);
 	}
-	else glUniformMatrix4fv(modelId, 1, GL_FALSE, &Camera::getCamera()[0][0]);
+	else glUniform1f(modelId, num);
+}
+
+shaderType ShaderManager::getType()
+{
+	return this->type;
 }

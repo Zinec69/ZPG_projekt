@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GLincludes.h"
+#include "Camera.h"
 #include <stdio.h>
 #include <vector>
 

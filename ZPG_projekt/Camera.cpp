@@ -8,6 +8,7 @@ float Camera::pitch = 1;
 int Camera::mouse_last_x = WINDOW_WIDTH / 2;
 int Camera::mouse_last_y = WINDOW_HEIGHT / 2;
 float Camera::FOV = 90;
+glm::mat4 Camera::perspective = glm::perspective(glm::radians(FOV), (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 100.0f);
 
 glm::mat4 Camera::getCamera()
 {
@@ -17,7 +18,17 @@ glm::mat4 Camera::getCamera()
 
 glm::mat4 Camera::getPerspective()
 {
-    return glm::perspective(glm::radians(FOV), 800.f / 600.f, 0.1f, 100.0f);
+	return perspective;
+}
+
+glm::vec3 Camera::getPosition()
+{
+	return eye;
+}
+
+void Camera::setPerspective(float FOV, float width, float height)
+{
+	perspective = glm::perspective(glm::radians(FOV), width / height, 0.1f, 100.0f);
 }
 
 void Camera::move()

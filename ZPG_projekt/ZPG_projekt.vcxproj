@@ -24,9 +24,17 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DrawObject.h" />
     <ClInclude Include="GLincludes.h" />
-    <ClInclude Include="Light.h" />
     <ClInclude Include="Model.h" />
-    <ClInclude Include="Models.h" />
+    <ClInclude Include="Models\bushes.h" />
+    <ClInclude Include="Models\cube.h" />
+    <ClInclude Include="Models\gift.h" />
+    <ClInclude Include="Models\plain.h" />
+    <ClInclude Include="Models\rectangle.h" />
+    <ClInclude Include="Models\sphere.h" />
+    <ClInclude Include="Models\suzi_flat.h" />
+    <ClInclude Include="Models\suzi_smooth.h" />
+    <ClInclude Include="Models\tree.h" />
+    <ClInclude Include="Models\triangle.h" />
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="Window.h" />
@@ -36,7 +44,6 @@
     <ClCompile Include="CallbackHandler.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DrawObject.cpp" />
-    <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />

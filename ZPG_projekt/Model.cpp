@@ -1,8 +1,8 @@
 #include "Model.h"
 
-Model::Model(const colorPoints vertexColor[], int size, int num_of_vertices)
+Model::Model(const float vertices[], int size, int num_of_vertices)
 {
-	this->vertexColor = vertexColor;
+	this->vertices = vertices;
 	this->size = size;
 	this->num_of_vertices = num_of_vertices;
 	
@@ -17,9 +17,9 @@ void Model::createVAO()
 	glBindVertexArray(this->VAO);
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(this->vertexColor[0]), (GLvoid*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (GLvoid*)0);
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(this->vertexColor[0]), (GLvoid*)(4 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (GLvoid*)(3 * sizeof(float)));
 }
 
 void Model::createVBO()
@@ -27,7 +27,7 @@ void Model::createVBO()
 	this->VBO = 0;
 	glGenBuffers(1, &this->VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
-	glBufferData(GL_ARRAY_BUFFER, this->size, this->vertexColor, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, this->size, this->vertices, GL_STATIC_DRAW);
 }
 
 void Model::draw()
