@@ -33,28 +33,28 @@ Application::Application(int windowWidth, int windowHeight)
 	//this->drawObjects.push_back(drawObject_4);
 	//this->drawObjects.push_back(drawObject_5);
 
-	ShaderManager* shader1 = new ShaderManager(BASIC);
-	ShaderManager* shader2 = new ShaderManager(LAMBERT);
-	ShaderManager* shader3 = new ShaderManager(PHONG);
-	ShaderManager* shader4 = new ShaderManager(PHONG_1);
-	ShaderManager* shader5 = new ShaderManager(BLINN);
+	ShaderManager* shader_basic = new ShaderManager(BASIC);
+	ShaderManager* shader_lambert = new ShaderManager(LAMBERT);
+	ShaderManager* shader_phong = new ShaderManager(PHONG);
+	ShaderManager* shader_phong_1 = new ShaderManager(PHONG_1);
+	ShaderManager* shader_blinn = new ShaderManager(BLINN);
+	ShaderManager* shader_multiple_lights = new ShaderManager(MULTIPLE_LIGHTS);
 
 	if (scene == 1)
 	{
-		Model* model = nullptr;
+		Model* model = new Model(sphere, sizeof(sphere), sizeof(sphere) / (sizeof(sphere[0]) * 6));
 		DrawObject* drawObject = nullptr;
 
 		for (int i = 0; i < 4; i++)
 		{
-			model = new Model(sphere, sizeof(sphere), sizeof(sphere) / (sizeof(sphere[0]) * 6));
-			drawObject = new DrawObject(model, shader3);
+			drawObject = new DrawObject(model, shader_multiple_lights);
 			this->drawObjects.push_back(drawObject);
 		}
 	}
 	else if (scene == 2)
 	{
 		Model* model = new Model(sphere, sizeof(sphere), sizeof(sphere) / (sizeof(sphere[0]) * 6));
-		DrawObject* drawObject = new DrawObject(model, shader4);
+		DrawObject* drawObject = new DrawObject(model, shader_phong_1);
 
 		this->drawObjects.push_back(drawObject);
 	}
@@ -82,14 +82,14 @@ Application::Application(int windowWidth, int windowHeight)
 				break;
 			}
 
-			drawObject = new DrawObject(model, shader3);
+			drawObject = new DrawObject(model, shader_phong);
 
 			this->drawObjects.push_back(drawObject);
 		}
 
 		model = new Model(plane::plain, sizeof(plane::plain), sizeof(plane::plain) / (sizeof(plane::plain[0]) * 6));
 
-		drawObject = new DrawObject(model, shader3);
+		drawObject = new DrawObject(model, shader_phong);
 
 		this->drawObjects.push_back(drawObject);
 	}

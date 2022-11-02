@@ -1,0 +1,60 @@
+#version 330
+
+in vec3 Normal;
+in vec3 FragPos;
+
+out vec4 FragColor;
+
+uniform vec3 viewPos;
+uniform vec3 objectColor;
+
+// enum LightType
+// {
+// 	POINT = 0,
+// 	DIRECTIONAL = 1,
+// 	SPOT = 2,
+// };
+
+struct Light
+{    
+    float ambientStrength;
+    float specularStrength;
+	int type;
+
+	vec3 color;
+	vec3 position;
+};
+
+#define NUM_OF_LIGHTS 2
+uniform Light lights[NUM_OF_LIGHTS];
+
+vec3 CalcPointLight_Blinn(Light light, vec3 normal, vec3 fragPos, vec3 viewDir)
+{
+    vec3 ambient = light.ambientStrength * light.color;
+	vec3 lightDir = normalize(light.position - FragPos);
+
+	float diff = max(dot(normal, lightDir), 0.0);
+	vec3 diffuse = diff * light.color;
+	
+	vec3 halfwayDir = normalize(lightDir + viewDir);
+	
+	float spec = pow(max(dot(normal, halfwayDir), 0.0), 32);
+	vec3 specular = light.specularStrength * spec * light.color;
+
+    return (ambient + diffuse + specular) * objectColor;
+}
+
+void main()
+{
+	vec3 norm = normalize(Normal);
+	vec3 viewDir = normalize(viewPos - FragPos);
+	
+    vec3 result;
+	for (int i = 0; i < NUM_OF_LIGHTS; i++)
+	{
+		if (lights[i].type == 0)
+			result += CalcPointLight_Blinn(lights[i], norm, FragPos, viewDir);
+	}
+
+	FragColor = vec4(result, 1.0);
+}

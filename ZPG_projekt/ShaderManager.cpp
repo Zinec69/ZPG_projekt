@@ -21,6 +21,9 @@ ShaderManager::ShaderManager(shaderType type)
 	case BLINN:
 		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex_light.txt", "../ZPG_projekt/Shaders/fragment_blinn.txt");
 		break;
+	case MULTIPLE_LIGHTS:
+		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex_light.txt", "../ZPG_projekt/Shaders/fragment_multiple_lights.txt");
+		break;
 	}
 
 	pollInfoLogs();
@@ -67,7 +70,7 @@ void ShaderManager::useProgram()
 	glUseProgram(this->shaderProgram);
 }
 
-void ShaderManager::useMat(glm::mat4 mat, const char name[])
+void ShaderManager::setMat(glm::mat4 mat, const char name[])
 {
 	GLint modelId = glGetUniformLocation(this->shaderProgram, name);
 	if (modelId == -1)
@@ -81,7 +84,7 @@ void ShaderManager::useMat(glm::mat4 mat, const char name[])
 	else glUniformMatrix4fv(modelId, 1, GL_FALSE, &mat[0][0]);
 }
 
-void ShaderManager::useVec(glm::vec3 vec, const char name[])
+void ShaderManager::setVec(glm::vec3 vec, const char name[])
 {
 	GLint modelId = glGetUniformLocation(this->shaderProgram, name);
 	if (modelId == -1)
@@ -95,7 +98,7 @@ void ShaderManager::useVec(glm::vec3 vec, const char name[])
 	else glUniform3fv(modelId, 1, &vec[0]);
 }
 
-void ShaderManager::useFloat(float num, const char name[])
+void ShaderManager::setFloat(float num, const char name[])
 {
 	GLint modelId = glGetUniformLocation(this->shaderProgram, name);
 	if (modelId == -1)
@@ -107,6 +110,20 @@ void ShaderManager::useFloat(float num, const char name[])
 		exit(1);
 	}
 	else glUniform1f(modelId, num);
+}
+
+void ShaderManager::setInt(int num, const char name[])
+{
+	GLint modelId = glGetUniformLocation(this->shaderProgram, name);
+	if (modelId == -1)
+	{
+		std::string err = "[Shader error] ";
+		err += name;
+		err += " int not found\n";
+		fprintf(stderr, err.c_str());
+		exit(1);
+	}
+	else glUniform1i(modelId, num);
 }
 
 shaderType ShaderManager::getType()

@@ -8,17 +8,33 @@ DrawObject::DrawObject(Model* model, ShaderManager* shader)
 
 void DrawObject::draw()
 {
-	this->shader->useMat(this->object, "model");
-	this->shader->useMat(Camera::getCamera(), "view");
-	this->shader->useMat(Camera::getPerspective(), "projection");
-	this->shader->useFloat(this->scale, "scale");
+	this->shader->setMat(this->object, "model");
+	this->shader->setMat(Camera::getCamera(), "view");
+	this->shader->setMat(Camera::getPerspective(), "projection");
+	this->shader->setFloat(this->scale, "scale");
 
 	if (this->shader->getType() != BASIC)
 	{
-		this->shader->useVec(this->color, "objectColor");
-		this->shader->useVec(this->lightColor, "lightColor");
-		this->shader->useVec(glm::vec3(0.0, 0.0, 0.0), "lightPos");
-		this->shader->useVec(Camera::getPosition(), "viewPos");
+		this->shader->setVec(this->color, "objectColor");
+		this->shader->setVec(Camera::getPosition(), "viewPos");
+		if (this->shader->getType() != MULTIPLE_LIGHTS)
+		{
+			this->shader->setVec(glm::vec3(0.0, 0.0, 0.0), "lightPos");
+			this->shader->setVec(this->lightColor, "lightColor");
+		}
+		else
+		{
+			this->shader->setInt(0, "lights[0].type");
+			this->shader->setFloat(0.1, "lights[0].ambientStrength");
+			this->shader->setFloat(0.5, "lights[0].specularStrength");
+			this->shader->setVec(this->lightColor, "lights[0].color");
+			this->shader->setVec(glm::vec3(4.0, 4.0, 0.0), "lights[0].position");
+			this->shader->setInt(0, "lights[1].type");
+			this->shader->setFloat(0.1, "lights[1].ambientStrength");
+			this->shader->setFloat(0.5, "lights[1].specularStrength");
+			this->shader->setVec(this->lightColor, "lights[1].color");
+			this->shader->setVec(glm::vec3(-4.0, -4.0, 0.0), "lights[1].position");
+		}
 	}
 
 	this->shader->useProgram();
