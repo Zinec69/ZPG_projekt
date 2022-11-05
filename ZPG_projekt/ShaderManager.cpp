@@ -1,13 +1,18 @@
 #include "ShaderManager.h"
 
+struct lmao {
+	int xd;
+	std::string lol;
+};
+
 ShaderManager::ShaderManager(shaderType type)
 {
 	this->type = type;
 
 	switch (this->type)
 	{
-	case BASIC:
-		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex_basic.txt", "../ZPG_projekt/Shaders/fragment_basic.txt");
+	case LIGHT_SOURCE:
+		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex_light_source.txt", "../ZPG_projekt/Shaders/fragment_light_source.txt");
 		break;
 	case LAMBERT:
 		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex_light.txt", "../ZPG_projekt/Shaders/fragment_lambert.txt");
@@ -84,7 +89,7 @@ void ShaderManager::setMat(glm::mat4 mat, const char name[])
 	else glUniformMatrix4fv(modelId, 1, GL_FALSE, &mat[0][0]);
 }
 
-void ShaderManager::setVec(glm::vec3 vec, const char name[])
+void ShaderManager::setVec3(glm::vec3 vec, const char name[])
 {
 	GLint modelId = glGetUniformLocation(this->shaderProgram, name);
 	if (modelId == -1)

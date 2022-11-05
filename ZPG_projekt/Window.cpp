@@ -33,6 +33,11 @@ void Window::swapBuffers()
 	glfwSwapBuffers(this->window);
 }
 
+void Window::initImgui()
+{
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+}
+
 void Window::lockCursor()
 {
 	if (window != nullptr)

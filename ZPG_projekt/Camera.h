@@ -21,6 +21,7 @@ public:
 	static glm::mat4 getCamera();
 	static glm::mat4 getPerspective();
 	static glm::vec3 getPosition();
+	static glm::vec3 getTarget();
 	static void setPerspective(float FOV, float width, float height);
 	static void move();
 

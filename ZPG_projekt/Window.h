@@ -17,6 +17,7 @@ public:
 	~Window();
 	int shouldClose();
 	void swapBuffers();
+	void initImgui();
 	static void lockCursor();
 	static void unlockCursor();
 };
