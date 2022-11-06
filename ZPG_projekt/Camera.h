@@ -8,6 +8,8 @@
 class Camera : public Subject
 {
 private:
+	Camera() {};
+
 	static glm::mat4 perspective;
 	static glm::vec3 eye;
 	static glm::vec3 target;
@@ -18,7 +20,6 @@ private:
 	static int mouse_last_y;
 	static float FOV;
 public:
-	Camera() {};
 	static glm::mat4 getCamera();
 	static glm::mat4 getPerspective();
 	static glm::vec3 getPosition();

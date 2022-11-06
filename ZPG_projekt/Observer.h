@@ -2,9 +2,10 @@
 
 #include <vector>
 
-enum class EventType
+enum EventType
 {
     MouseMoved,
+    MouseScrolled,
     CameraMoved,
     WindowSizeChanged
 };
