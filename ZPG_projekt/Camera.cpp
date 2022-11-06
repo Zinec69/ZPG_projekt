@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-glm::vec3 Camera::eye{ 0.f, 0.f, 4.f };
+glm::vec3 Camera::eye{ 0.f, 0.f, 5.f };
 glm::vec3 Camera::target{ 0.f, 0.f, -1.f };
 glm::vec3 Camera::up{ 0.f, 1.f, 0.f };
 float Camera::yaw = -90;

@@ -4,6 +4,7 @@
 #include "Window.h"
 #include "ShaderManager.h"
 #include "DrawObject.h"
+#include "Observer.h"
 
 class Application
 {

@@ -24,9 +24,9 @@ private:
 public:
 	ShaderManager(shaderType type);
 	void useProgram();
-	void setMat(glm::mat4 mat, const char name[]);
-	void setVec3(glm::vec3 vec, const char name[]);
-	void setFloat(float num, const char name[]);
-	void setInt(int num, const char name[]);
+	void setMat(glm::mat4 mat, const std::string name);
+	void setVec3(glm::vec3 vec, const std::string name);
+	void setFloat(float num, const std::string name);
+	void setInt(int num, const std::string name);
 	shaderType getType();
 };

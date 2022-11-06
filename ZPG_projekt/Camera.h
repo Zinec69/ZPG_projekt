@@ -3,8 +3,9 @@
 #include "GLincludes.h"
 #include "CallbackHandler.h"
 #include "Window.h"
+#include "Observer.h"
 
-class Camera
+class Camera : public Subject
 {
 private:
 	static glm::mat4 perspective;

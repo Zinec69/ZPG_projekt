@@ -1,9 +1,12 @@
 #include "DrawObject.h"
 
-DrawObject::DrawObject(Model* model, ShaderManager* shader)
+DrawObject::DrawObject(Model* model, ShaderManager* shader, float scale, glm::vec3 color, glm::vec3 position)
 {
 	this->model = model;
 	this->shader = shader;
+	this->color = color;
+	this->scale = scale;
+	this->object = glm::translate(glm::mat4{ 1.0 }, position);
 }
 
 void DrawObject::draw()
@@ -19,46 +22,47 @@ void DrawObject::draw()
 	{
 		this->shader->setVec3(this->color, "objectColor");
 		this->shader->setVec3(Camera::getPosition(), "viewPos");
+
 		if (this->shader->getType() != MULTIPLE_LIGHTS)
 		{
 			this->shader->setVec3(glm::vec3(0.0, 0.0, 0.0), "lightPos");
-			this->shader->setVec3(this->lightColor, "lightColor");
+			this->shader->setVec3(this->lights[0]->color, "lightColor");
 		}
 		else
 		{
-			this->shader->setInt(32, "shininess");
+			this->shader->setInt(this->material.shininess, "material.shininess");
 
-			this->shader->setInt(POINT, "lights[0].type");
-			this->shader->setFloat(0.1, "lights[0].ambientStrength");
-			this->shader->setFloat(0.5, "lights[0].specularStrength");
-			this->shader->setVec3(this->lightColor, "lights[0].color");
-			this->shader->setVec3(glm::vec3(4.0, 4.0, 0.0), "lights[0].position");
+			for (int i = 0; i < this->lights.size(); i++)
+			{
+				this->shader->setInt(this->lights[i]->state, "lights[" + to_string(i) + "].state");
+				this->shader->setInt(this->lights[i]->type, "lights[" + to_string(i) + "].type");
+				this->shader->setFloat(this->lights[i]->ambientStrength, "lights[" + to_string(i) + "].ambientStrength");
+				this->shader->setFloat(this->lights[i]->specularStrength, "lights[" + to_string(i) + "].specularStrength");
+				this->shader->setFloat(this->lights[i]->intensity, "lights[" + to_string(i) + "].intensity");
+				this->shader->setVec3(this->lights[i]->color, "lights[" + to_string(i) + "].color");
+				this->shader->setVec3(this->lights[i]->position, "lights[" + to_string(i) + "].position");
+				this->shader->setVec3(this->lights[i]->direction, "lights[" + to_string(i) + "].direction");
+				this->shader->setFloat(this->lights[i]->cutOff, "lights[" + to_string(i) + "].cutOff");
+				this->shader->setFloat(this->lights[i]->outerCutOff, "lights[" + to_string(i) + "].outerCutOff");
+			}
 
-			this->shader->setInt(POINT, "lights[1].type");
-			this->shader->setFloat(0.1, "lights[1].ambientStrength");
-			this->shader->setFloat(0.5, "lights[1].specularStrength");
-			this->shader->setVec3(this->lightColor, "lights[1].color");
-			this->shader->setVec3(this->lightPos, "lights[1].position");
-
-			this->shader->setInt(this->spotLightOn, "spotLightOn");
-			this->shader->setInt(this->pointLightsOn, "pointLightsOn");
-
-			this->shader->setInt(SPOT, "lights[2].type");
-			this->shader->setFloat(0.05, "lights[2].ambientStrength");
-			this->shader->setFloat(0.5, "lights[2].specularStrength");
-			this->shader->setVec3(this->lightColor, "lights[2].color");
-			this->shader->setVec3(Camera::getPosition(), "lights[2].position");
-			this->shader->setVec3(Camera::getTarget(), "lights[2].direction");
-			this->shader->setFloat(glm::cos(glm::radians(13.0)), "lights[2].cutOff");
-			this->shader->setFloat(glm::cos(glm::radians(22.0)), "lights[2].outerCutOff");
-
-			this->shader->setInt(3, "numOfLights");
+			this->shader->setInt(this->lights.size() <= 100 ? this->lights.size() : 100, "numOfLights");
 		}
 	}
 	else
-		this->shader->setVec3(this->lightColor, "lightColor");
+		this->shader->setVec3(this->lights[0]->color, "lightColor");
 
 	this->model->draw();
+}
+
+void DrawObject::addLight(Light* light)
+{
+	this->lights.push_back(light);
+}
+
+void DrawObject::setLights(std::vector<Light*> lights)
+{
+	this->lights = lights;
 }
 
 void DrawObject::transform()
@@ -98,22 +102,12 @@ void DrawObject::changeSize(float size)
 	this->scale = size;
 }
 
-void DrawObject::setPointLights(bool on)
+void DrawObject::changeShininess(int shininess)
 {
-	this->pointLightsOn = on ? 1 : 0;
+	this->material.shininess = shininess;
 }
 
-void DrawObject::setSpotLight(bool on)
+bool DrawObject::isLightSource() const
 {
-	this->spotLightOn = on ? 1 : 0;
-}
-
-void DrawObject::changeLightColor(glm::vec3 color)
-{
-	this->lightColor = color;
-}
-
-void DrawObject::moveLight(glm::vec3 position)
-{
-	this->lightPos = position;
+	return this->shader->getType() == LIGHT_SOURCE;
 }

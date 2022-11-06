@@ -32,6 +32,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DrawObject.h" />
     <ClInclude Include="GLincludes.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Models\bushes.h" />
     <ClInclude Include="Models\cube.h" />
@@ -43,6 +44,8 @@
     <ClInclude Include="Models\suzi_smooth.h" />
     <ClInclude Include="Models\tree.h" />
     <ClInclude Include="Models\triangle.h" />
+    <ClInclude Include="Observer.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="Window.h" />
@@ -59,8 +62,11 @@
     <ClCompile Include="CallbackHandler.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DrawObject.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Observer.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -72,14 +78,14 @@
     </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Shaders\fragment_light_source.txt" />
-    <Text Include="Shaders\fragment_blinn.txt" />
-    <Text Include="Shaders\fragment_lambert.txt" />
-    <Text Include="Shaders\fragment_multiple_lights.txt" />
-    <Text Include="Shaders\fragment_phong.txt" />
-    <Text Include="Shaders\fragment_phong_1.txt" />
-    <Text Include="Shaders\vertex_light_source.txt" />
-    <Text Include="Shaders\vertex_light.txt" />
+    <None Include="Shaders\blinn.frag" />
+    <None Include="Shaders\lambert.frag" />
+    <None Include="Shaders\light_source.frag" />
+    <None Include="Shaders\light_source.vert" />
+    <None Include="Shaders\multiple_lights.frag" />
+    <None Include="Shaders\phong.frag" />
+    <None Include="Shaders\phong_1.frag" />
+    <None Include="Shaders\vertex.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

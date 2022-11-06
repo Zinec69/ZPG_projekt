@@ -12,22 +12,22 @@ ShaderManager::ShaderManager(shaderType type)
 	switch (this->type)
 	{
 	case LIGHT_SOURCE:
-		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex_light_source.txt", "../ZPG_projekt/Shaders/fragment_light_source.txt");
+		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/light_source.vert", "../ZPG_projekt/Shaders/light_source.frag");
 		break;
 	case LAMBERT:
-		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex_light.txt", "../ZPG_projekt/Shaders/fragment_lambert.txt");
+		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex.vert", "../ZPG_projekt/Shaders/lambert.frag");
 		break;
 	case PHONG:
-		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex_light.txt", "../ZPG_projekt/Shaders/fragment_phong.txt");
+		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex.vert", "../ZPG_projekt/Shaders/phong.frag");
 		break;
 	case PHONG_1:
-		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex_light.txt", "../ZPG_projekt/Shaders/fragment_phong_1.txt");
+		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex.vert", "../ZPG_projekt/Shaders/phong_1.frag");
 		break;
 	case BLINN:
-		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex_light.txt", "../ZPG_projekt/Shaders/fragment_blinn.txt");
+		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex.vert", "../ZPG_projekt/Shaders/blinn.frag");
 		break;
 	case MULTIPLE_LIGHTS:
-		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex_light.txt", "../ZPG_projekt/Shaders/fragment_multiple_lights.txt");
+		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex.vert", "../ZPG_projekt/Shaders/multiple_lights.frag");
 		break;
 	}
 
@@ -75,9 +75,9 @@ void ShaderManager::useProgram()
 	glUseProgram(this->shaderProgram);
 }
 
-void ShaderManager::setMat(glm::mat4 mat, const char name[])
+void ShaderManager::setMat(glm::mat4 mat, const std::string name)
 {
-	GLint modelId = glGetUniformLocation(this->shaderProgram, name);
+	GLint modelId = glGetUniformLocation(this->shaderProgram, name.c_str());
 	if (modelId == -1)
 	{
 		std::string err = "[Shader error] ";
@@ -89,9 +89,9 @@ void ShaderManager::setMat(glm::mat4 mat, const char name[])
 	else glUniformMatrix4fv(modelId, 1, GL_FALSE, &mat[0][0]);
 }
 
-void ShaderManager::setVec3(glm::vec3 vec, const char name[])
+void ShaderManager::setVec3(glm::vec3 vec, const std::string name)
 {
-	GLint modelId = glGetUniformLocation(this->shaderProgram, name);
+	GLint modelId = glGetUniformLocation(this->shaderProgram, name.c_str());
 	if (modelId == -1)
 	{
 		std::string err = "[Shader error] ";
@@ -103,9 +103,9 @@ void ShaderManager::setVec3(glm::vec3 vec, const char name[])
 	else glUniform3fv(modelId, 1, &vec[0]);
 }
 
-void ShaderManager::setFloat(float num, const char name[])
+void ShaderManager::setFloat(float num, const std::string name)
 {
-	GLint modelId = glGetUniformLocation(this->shaderProgram, name);
+	GLint modelId = glGetUniformLocation(this->shaderProgram, name.c_str());
 	if (modelId == -1)
 	{
 		std::string err = "[Shader error] ";
@@ -117,9 +117,9 @@ void ShaderManager::setFloat(float num, const char name[])
 	else glUniform1f(modelId, num);
 }
 
-void ShaderManager::setInt(int num, const char name[])
+void ShaderManager::setInt(int num, const std::string name)
 {
-	GLint modelId = glGetUniformLocation(this->shaderProgram, name);
+	GLint modelId = glGetUniformLocation(this->shaderProgram, name.c_str());
 	if (modelId == -1)
 	{
 		std::string err = "[Shader error] ";
