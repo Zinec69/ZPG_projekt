@@ -2,33 +2,47 @@
 
 #include "GLincludes.h"
 #include "Camera.h"
+#include "Observer.h"
 #include <stdio.h>
 #include <vector>
 
-class Mouse
+class Mouse : public Subject
 {
 private:
 	Mouse() {};
 public:
-	static int x;
-	static int y;
-	static int button_clicked;
-	static int scroll;
+	int x = -1;
+	int y = -1;
+	int button_clicked = -1;
+	int button_action = -1;
+	int scroll = 0;
+
+	static Mouse& getInstance()
+	{
+		static Mouse instance;
+		return instance;
+	}
 
 	Mouse(Mouse const&) = delete;
-	Mouse& operator = (Mouse const&) = delete;
+	Mouse& operator=(Mouse const&) = delete;
 };
 
-class Keyboard
+class Keyboard : public Subject
 {
 private:
 	Keyboard() {};
 public:
-	static int key_pressed;
-	static int key_action;
+	int key_pressed = -1;
+	int key_action = -1;
+
+	static Keyboard& getInstance()
+	{
+		static Keyboard instance;
+		return instance;
+	}
 
 	Keyboard(Keyboard const&) = delete;
-	Keyboard& operator = (Keyboard const&) = delete;
+	Keyboard& operator=(Keyboard const&) = delete;
 };
 
 class CallbackHandler
@@ -43,8 +57,6 @@ private:
 	static void cursor_callback(GLFWwindow* window, double x, double y);
 	static void button_callback(GLFWwindow* window, int button, int action, int mode);
 	static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-	static Mouse* mouse;
-	static Keyboard* keyboard;
 public:
 	CallbackHandler(GLFWwindow* window);
 

@@ -5,7 +5,9 @@
 enum EventType
 {
     MouseMoved,
+    MouseClicked,
     MouseScrolled,
+    KeyboardPressed,
     CameraMoved,
     WindowSizeChanged
 };

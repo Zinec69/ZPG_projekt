@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -14,7 +15,7 @@
 extern const int WINDOW_WIDTH;
 extern const int WINDOW_HEIGHT;
 
-void printMat(glm::mat4 mat)
+inline void printMat(glm::mat4 mat)
 {
 	for (int i = 0; i < 4; i++)
 	{

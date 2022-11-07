@@ -26,29 +26,12 @@ ShaderManager::ShaderManager(shaderType type)
 		break;
 	}
 
+	this->projectionMat = Camera::getInstance().getPerspective();
+	this->cameraPosition = Camera::getInstance().getPosition();
+	this->viewMat = Camera::getInstance().getCamera();
+
 	pollInfoLogs();
 }
-
-//void ShaderManager::addShader(const char* shader_code, int type)
-//{
-//	GLuint shader = glCreateShader(type);
-//	glShaderSource(shader, 1, &shader_code, NULL);
-//	glCompileShader(shader);
-//	this->shaders.push_back(shader);
-//}
-
-//void ShaderManager::createProgram()
-//{
-//	addShader(this->vertex_shader_code, GL_VERTEX_SHADER);
-//	addShader(this->fragment_shader_code, GL_FRAGMENT_SHADER);
-//
-//	this->shaderProgram = glCreateProgram();
-//	for (int i = 0; i < this->shaders.size(); i++)
-//		glAttachShader(this->shaderProgram, this->shaders[i]);
-//	glLinkProgram(this->shaderProgram);
-//	
-//	pollInfoLogs();
-//}
 
 void ShaderManager::pollInfoLogs()
 {
@@ -75,9 +58,9 @@ void ShaderManager::setMat(glm::mat4 mat, const std::string name)
 	GLint modelId = glGetUniformLocation(this->shaderProgram, name.c_str());
 	if (modelId == -1)
 	{
-		std::string err = "[Shader error] ";
+		std::string err = "[Shader error] Matrix '";
 		err += name;
-		err += " matrix not found\n";
+		err += "' not found\n";
 		fprintf(stderr, err.c_str());
 		exit(1);
 	}
@@ -89,9 +72,9 @@ void ShaderManager::setVec3(glm::vec3 vec, const std::string name)
 	GLint modelId = glGetUniformLocation(this->shaderProgram, name.c_str());
 	if (modelId == -1)
 	{
-		std::string err = "[Shader error] ";
+		std::string err = "[Shader error] Vector '";
 		err += name;
-		err += " vector not found\n";
+		err += "' not found\n";
 		fprintf(stderr, err.c_str());
 		exit(1);
 	}
@@ -103,9 +86,9 @@ void ShaderManager::setFloat(float num, const std::string name)
 	GLint modelId = glGetUniformLocation(this->shaderProgram, name.c_str());
 	if (modelId == -1)
 	{
-		std::string err = "[Shader error] ";
+		std::string err = "[Shader error] Float '";
 		err += name;
-		err += " float not found\n";
+		err += "' not found\n";
 		fprintf(stderr, err.c_str());
 		exit(1);
 	}
@@ -117,9 +100,9 @@ void ShaderManager::setInt(int num, const std::string name)
 	GLint modelId = glGetUniformLocation(this->shaderProgram, name.c_str());
 	if (modelId == -1)
 	{
-		std::string err = "[Shader error] ";
+		std::string err = "[Shader error] Int '";
 		err += name;
-		err += " int not found\n";
+		err += "' not found\n";
 		fprintf(stderr, err.c_str());
 		exit(1);
 	}
@@ -145,8 +128,6 @@ void ShaderManager::onSubjectNotification(EventType eventType, void* object)
 	{
 		this->cameraPosition = Camera::getInstance().getPosition();
 		this->viewMat = Camera::getInstance().getCamera();
-
-		printMat(Camera::getInstance().getCamera());
 	}
 	else if (eventType == WindowSizeChanged)
 	{

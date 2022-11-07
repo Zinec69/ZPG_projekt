@@ -84,11 +84,11 @@ void Application::run()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		if (Keyboard::key_pressed == GLFW_KEY_LEFT) y_rot += 1;
-		if (Keyboard::key_pressed == GLFW_KEY_RIGHT) y_rot -= 1;
+		if (Keyboard::getInstance().key_pressed == GLFW_KEY_LEFT) y_rot += 1;
+		if (Keyboard::getInstance().key_pressed == GLFW_KEY_RIGHT) y_rot -= 1;
 
-		if (Keyboard::key_pressed == GLFW_KEY_UP) x_rot += 1;
-		if (Keyboard::key_pressed == GLFW_KEY_DOWN) x_rot -= 1;
+		if (Keyboard::getInstance().key_pressed == GLFW_KEY_UP) x_rot += 1;
+		if (Keyboard::getInstance().key_pressed == GLFW_KEY_DOWN) x_rot -= 1;
 
 		this->drawObjects[0]->changeColor(sphere1);
 		this->drawObjects[0]->changeSize(sizes);
@@ -167,6 +167,12 @@ void Application::run()
 		ImGui::Checkbox("On", &direct);
 		ImGui::SliderFloat("Intensity", &directLight_intensity, 0, 10);
 		ImGui::ColorEdit3("Color", &directionalLightColor.x);
+		ImGui::End();
+
+		ImGui::Begin("Camera");
+		ImGui::Text(("Position: " + to_string(Camera::getInstance().getPosition().x) + ", " + to_string(Camera::getInstance().getPosition().y) + ", " + to_string(Camera::getInstance().getPosition().z)).c_str());
+		ImGui::Text(("Target: " + to_string(Camera::getInstance().getTarget().x) + ", " + to_string(Camera::getInstance().getTarget().y) + ", " + to_string(Camera::getInstance().getTarget().z)).c_str());
+		ImGui::Text(("FOV: " + to_string(Camera::getInstance().getFOV())).c_str());
 		ImGui::End();
 
 		ImGui::Render();
