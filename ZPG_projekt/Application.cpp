@@ -1,7 +1,5 @@
 #include "Application.h"
 
-int scene = 1;
-
 Application::Application(int windowWidth, int windowHeight)
 {
 	if (!glfwInit())
@@ -42,6 +40,9 @@ void Application::run()
 	ShaderManager* shader_light_source = new ShaderManager(LIGHT_SOURCE);
 	ShaderManager* shader_multiple_lights = new ShaderManager(MULTIPLE_LIGHTS);
 
+	Camera::getInstance().registerObserver(*shader_light_source);
+	Camera::getInstance().registerObserver(*shader_multiple_lights);
+
 	Model* model = new Model(sphere, sizeof(sphere), sizeof(sphere) / (sizeof(sphere[0]) * 6));
 	DrawObject* drawObject = nullptr;
 
@@ -65,10 +66,11 @@ void Application::run()
 
 	Light point_1 = Light(POINT, glm::vec3(-glm::cos(glm::radians(light_rot)) * 4, 4, glm::sin(glm::radians(light_rot)) * 2));
 	Light point_2 = Light(POINT, glm::vec3(glm::cos(glm::radians(light_rot)) * 4, glm::sin(glm::radians(light_rot)) * 4, 0));
-	Light spot_1 = Light(SPOT, Camera::getPosition(), Camera::getTarget(), glm::vec3(1.0), spotLight_intensity, 0.03);
+	Light spot_1 = Light(SPOT, glm::vec3(0.0), glm::vec3(0.0), glm::vec3(1.0), spotLight_intensity, 0.03, 0.5, glm::cos(glm::radians(13.0)), glm::cos(glm::radians(22.0)), true);
+	Camera::getInstance().registerObserver(spot_1);
 	Light spot_2 = Light(SPOT, glm::vec3(0.0, 5.0, 1.0), glm::vec3(0.0, -1.0, 0.0), glm::vec3(1.0), spotLight_intensity, 0.03);
 	Light dir_1 = Light(DIRECTIONAL, glm::vec3(0.0), glm::vec3(0.0, -1.0, 0.0));
-	
+
 	std::vector<Light*> lights = { &point_1, &point_2, &spot_1, &spot_2, &dir_1 };
 	
 	for (int i = 0; i < this->drawObjects.size(); i++)
@@ -106,8 +108,6 @@ void Application::run()
 
 		point_1.position = glm::vec3(-glm::cos(glm::radians(light_rot)) * 4, 4, glm::sin(glm::radians(light_rot)) * 2);
 		point_2.position = glm::vec3(glm::cos(glm::radians(light_rot)) * 4, glm::sin(glm::radians(light_rot)) * 4, 0);
-		spot_1.position = Camera::getPosition();
-		spot_1.direction = Camera::getTarget();
 		
 		for (Light* light : lights)
 		{
@@ -132,6 +132,8 @@ void Application::run()
 				light->intensity = directLight_intensity;
 			}
 		}
+		
+		Camera::getInstance().move();
 
 		for (int i = 0; i < this->drawObjects.size(); i++)
 		{

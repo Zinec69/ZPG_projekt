@@ -13,15 +13,14 @@ void DrawObject::draw()
 {
 	this->shader->useProgram();
 
+	this->shader->setCameraData();
+
 	this->shader->setMat(this->object, "model");
-	this->shader->setMat(Camera::getCamera(), "view");
-	this->shader->setMat(Camera::getPerspective(), "projection");
 	this->shader->setFloat(this->scale, "scale");
 
 	if (this->shader->getType() != LIGHT_SOURCE)
 	{
 		this->shader->setVec3(this->color, "objectColor");
-		this->shader->setVec3(Camera::getPosition(), "viewPos");
 
 		if (this->shader->getType() != MULTIPLE_LIGHTS)
 		{

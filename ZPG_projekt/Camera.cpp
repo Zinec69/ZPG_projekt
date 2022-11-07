@@ -1,39 +1,29 @@
 #include "Camera.h"
 
-glm::vec3 Camera::eye{ 0.f, 0.f, 5.f };
-glm::vec3 Camera::target{ 0.f, 0.f, -1.f };
-glm::vec3 Camera::up{ 0.f, 1.f, 0.f };
-float Camera::yaw = -90;
-float Camera::pitch = 1;
-int Camera::mouse_last_x = WINDOW_WIDTH / 2;
-int Camera::mouse_last_y = WINDOW_HEIGHT / 2;
-float Camera::FOV = 90;
-glm::mat4 Camera::perspective = glm::perspective(glm::radians(FOV), (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 100.0f);
-
 glm::mat4 Camera::getCamera()
 {
-	move();
-    return glm::lookAt(eye, eye + target, up);
+	return this->lookAt;
 }
 
 glm::mat4 Camera::getPerspective()
 {
-	return perspective;
+	return this->perspective;
 }
 
 glm::vec3 Camera::getPosition()
 {
-	return eye;
+	return this->eye;
 }
 
 glm::vec3 Camera::getTarget()
 {
-	return target;
+	return this->target;
 }
 
 void Camera::setPerspective(float FOV, float width, float height)
 {
-	perspective = glm::perspective(glm::radians(FOV), width / height, 0.1f, 100.0f);
+	this->perspective = glm::perspective(glm::radians(FOV), width / height, 0.1f, 100.0f);
+	notifyObservers(CameraMoved, this);
 }
 
 void Camera::move()
@@ -47,23 +37,23 @@ void Camera::move()
 
 		const float cameraSpeed = 0.02f;
 		if (Keyboard::key_pressed == GLFW_KEY_W)
-			eye += cameraSpeed * target;
+			this->eye += cameraSpeed * this->target;
 		if (Keyboard::key_pressed == GLFW_KEY_S)
-			eye -= cameraSpeed * target;
+			this->eye -= cameraSpeed * this->target;
 		if (Keyboard::key_pressed == GLFW_KEY_A)
-			eye -= glm::normalize(glm::cross(target, up)) * cameraSpeed;
+			this->eye -= glm::normalize(glm::cross(this->target, this->up)) * cameraSpeed;
 		if (Keyboard::key_pressed == GLFW_KEY_D)
-			eye += glm::normalize(glm::cross(target, up)) * cameraSpeed;
+			this->eye += glm::normalize(glm::cross(this->target, this->up)) * cameraSpeed;
 		if (Keyboard::key_pressed == GLFW_KEY_SPACE)
-			eye += up * cameraSpeed;
+			this->eye += this->up * cameraSpeed;
 		if (Keyboard::key_pressed == GLFW_KEY_LEFT_CONTROL)
-			eye -= up * cameraSpeed;
+			this->eye -= this->up * cameraSpeed;
 
-		float x_offset = Mouse::x - mouse_last_x;
-		float y_offset = mouse_last_y - Mouse::y;
+		float x_offset = Mouse::x - this->mouse_last_x;
+		float y_offset = this->mouse_last_y - Mouse::y;
 
-		mouse_last_x = Mouse::x;
-		mouse_last_y = Mouse::y;
+		this->mouse_last_x = Mouse::x;
+		this->mouse_last_y = Mouse::y;
 
 		const float sensitivity = 0.1f;
 		x_offset *= sensitivity;
@@ -72,21 +62,25 @@ void Camera::move()
 		if (Mouse::button_clicked == GLFW_MOUSE_BUTTON_LEFT)
 		{
 			Window::lockCursor();
-			yaw += x_offset;
-			pitch += y_offset;
+			this->yaw += x_offset;
+			this->pitch += y_offset;
 		}
 		else
 			Window::unlockCursor();
 
-		if (pitch > 89.0f)
-			pitch = 89.0f;
-		if (pitch < -89.0f)
-			pitch = -89.0f;
+		if (this->pitch > 89.0f)
+			this->pitch = 89.0f;
+		if (this->pitch < -89.0f)
+			this->pitch = -89.0f;
 
 		glm::vec3 direction{};
-		direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-		direction.y = sin(glm::radians(pitch));
-		direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-		target = glm::normalize(direction);
+		direction.x = cos(glm::radians(this->yaw)) * cos(glm::radians(this->pitch));
+		direction.y = sin(glm::radians(this->pitch));
+		direction.z = sin(glm::radians(this->yaw)) * cos(glm::radians(this->pitch));
+		this->target = glm::normalize(direction);
+
+		this->lookAt = glm::lookAt(this->eye, this->eye + this->target, this->up);
+
+		notifyObservers(CameraMoved, this);
 	}
 }

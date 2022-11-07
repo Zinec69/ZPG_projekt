@@ -12,7 +12,7 @@ enum EventType
 
 struct Observer
 {
-    virtual void notified(EventType eventType, void* object) = 0;
+    virtual void onSubjectNotification(EventType eventType, void* object) = 0;
 };
 
 class Subject

@@ -1,10 +1,5 @@
 #include "ShaderManager.h"
 
-struct lmao {
-	int xd;
-	std::string lol;
-};
-
 ShaderManager::ShaderManager(shaderType type)
 {
 	this->type = type;
@@ -131,7 +126,30 @@ void ShaderManager::setInt(int num, const std::string name)
 	else glUniform1i(modelId, num);
 }
 
+void ShaderManager::setCameraData()
+{
+	setMat(this->viewMat, "view");
+	setMat(this->projectionMat, "projection");
+	if (this->type != LIGHT_SOURCE)
+		setVec3(this->cameraPosition, "viewPos");
+}
+
 shaderType ShaderManager::getType()
 {
 	return this->type;
+}
+
+void ShaderManager::onSubjectNotification(EventType eventType, void* object)
+{
+	if (eventType == CameraMoved)
+	{
+		this->cameraPosition = Camera::getInstance().getPosition();
+		this->viewMat = Camera::getInstance().getCamera();
+
+		printMat(Camera::getInstance().getCamera());
+	}
+	else if (eventType == WindowSizeChanged)
+	{
+		this->projectionMat = Camera::getInstance().getPerspective();
+	}
 }

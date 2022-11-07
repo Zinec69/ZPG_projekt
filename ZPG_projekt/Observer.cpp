@@ -8,5 +8,5 @@ void Subject::registerObserver(Observer& obs)
 void Subject::notifyObservers(EventType type, void* obj)
 {
     for (Observer* obs : observers)
-        obs->notified(type, obj);
+        obs->onSubjectNotification(type, obj);
 }

@@ -10,7 +10,6 @@ class Scene
 private:
 	std::vector<DrawObject*> objects;
 	std::vector<Light*> lights;
-	// Camera camera;
 public:
 	Scene() {};
 	void render();
