@@ -38,28 +38,35 @@ void Camera::setPerspective(float FOV, float width, float height)
 	notifyObservers(WindowSizeChanged, this);
 }
 
-void Camera::move()
+void Camera::changePosition()
 {
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	if (!io.WantCaptureMouse)
 	{
-		const float radius = 10.0f;
-		float camX = sin(glfwGetTime()) * radius;
-		float camZ = cos(glfwGetTime()) * radius;
-
 		if (Keyboard::getInstance().key_pressed == GLFW_KEY_W)
-			this->eye += this->speed * this->target;
+			this->eye += this->movementSpeed * this->target;
 		if (Keyboard::getInstance().key_pressed == GLFW_KEY_S)
-			this->eye -= this->speed * this->target;
+			this->eye -= this->movementSpeed * this->target;
 		if (Keyboard::getInstance().key_pressed == GLFW_KEY_A)
-			this->eye -= glm::normalize(glm::cross(this->target, this->up)) * this->speed;
+			this->eye -= glm::normalize(glm::cross(this->target, this->up)) * this->movementSpeed;
 		if (Keyboard::getInstance().key_pressed == GLFW_KEY_D)
-			this->eye += glm::normalize(glm::cross(this->target, this->up)) * this->speed;
+			this->eye += glm::normalize(glm::cross(this->target, this->up)) * this->movementSpeed;
 		if (Keyboard::getInstance().key_pressed == GLFW_KEY_SPACE)
-			this->eye += this->up * this->speed;
+			this->eye += this->up * this->movementSpeed;
 		if (Keyboard::getInstance().key_pressed == GLFW_KEY_LEFT_CONTROL)
-			this->eye -= this->up * this->speed;
-			
+			this->eye -= this->up * this->movementSpeed;
+
+		this->lookAt = glm::lookAt(this->eye, this->eye + this->target, this->up);
+
+		notifyObservers(CameraMoved, this);
+	}
+}
+
+void Camera::changeTarget()
+{
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	if (!io.WantCaptureMouse)
+	{
 		float x_offset = (Mouse::getInstance().x - this->mouse_last_x) * this->mouseSensitivity;
 		float y_offset = (this->mouse_last_y - Mouse::getInstance().y) * this->mouseSensitivity;
 
@@ -69,7 +76,7 @@ void Camera::move()
 		if (Mouse::getInstance().button_clicked == GLFW_MOUSE_BUTTON_LEFT)
 		{
 			Window::lockCursor();
-			
+
 			this->yaw += x_offset;
 			this->pitch += y_offset;
 		}
@@ -97,7 +104,7 @@ void Camera::onSubjectNotification(EventType eventType, void* object)
 {
 	if (eventType == MouseMoved)
 	{
-		// move();
+		changeTarget();
 	}
 	else if (eventType == MouseClicked)
 	{
@@ -109,6 +116,6 @@ void Camera::onSubjectNotification(EventType eventType, void* object)
 	}
 	else if (eventType == KeyboardPressed)
 	{
-		// move();
+		changePosition();
 	}
 }

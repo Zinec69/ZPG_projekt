@@ -35,7 +35,7 @@ void Application::run()
 	glm::vec3 pointLightColor{ 1, 1, 1 }, spotLightColor{ 1, 1, 1 }, directionalLightColor{ 1, 1, 1 };
 	float sizes = 1;
 	float spotLightCutOff = 13.0;
-	bool spot = true, point = true, direct = true;
+	bool spot = true, point = true, direct = false;
 
 	ShaderManager* shader_light_source = new ShaderManager(LIGHT_SOURCE);
 	ShaderManager* shader_multiple_lights = new ShaderManager(MULTIPLE_LIGHTS);
@@ -46,16 +46,16 @@ void Application::run()
 	Model* model = new Model(sphere, sizeof(sphere), sizeof(sphere) / (sizeof(sphere[0]) * 6));
 	DrawObject* drawObject = nullptr;
 
-	drawObject = new DrawObject(model, shader_multiple_lights, 1, sphere1, glm::vec3(2, 0, 0));
+	drawObject = new DrawObject(model, shader_multiple_lights, 1, sphere1, glm::vec3(0, 2, -2));
 	this->drawObjects.push_back(drawObject);
 
-	drawObject = new DrawObject(model, shader_multiple_lights, 1, sphere2, glm::vec3(0, 2, 0));
+	drawObject = new DrawObject(model, shader_multiple_lights, 1, sphere2, glm::vec3(2, 2, 0));
 	this->drawObjects.push_back(drawObject);
 
-	drawObject = new DrawObject(model, shader_multiple_lights, 1, sphere3, glm::vec3(-2, 0, 0));
+	drawObject = new DrawObject(model, shader_multiple_lights, 1, sphere3, glm::vec3(0, 2, 2));
 	this->drawObjects.push_back(drawObject);
 
-	drawObject = new DrawObject(model, shader_multiple_lights, 1, sphere4, glm::vec3(0, -2, 0));
+	drawObject = new DrawObject(model, shader_multiple_lights, 1, sphere4, glm::vec3(-2, 2, 0));
 	this->drawObjects.push_back(drawObject);
 
 	drawObject = new DrawObject(model, shader_light_source, 0.2, glm::vec3(1.0, 1.0, 1.0), glm::vec3(-glm::cos(glm::radians(light_rot)) * 4, 4, glm::sin(glm::radians(light_rot)) * 2));
@@ -132,8 +132,6 @@ void Application::run()
 				light->intensity = directLight_intensity;
 			}
 		}
-		
-		Camera::getInstance().move();
 
 		for (int i = 0; i < this->drawObjects.size(); i++)
 		{
@@ -170,8 +168,8 @@ void Application::run()
 		ImGui::End();
 
 		ImGui::Begin("Camera");
-		ImGui::Text(("Position: " + to_string(Camera::getInstance().getPosition().x) + ", " + to_string(Camera::getInstance().getPosition().y) + ", " + to_string(Camera::getInstance().getPosition().z)).c_str());
-		ImGui::Text(("Target: " + to_string(Camera::getInstance().getTarget().x) + ", " + to_string(Camera::getInstance().getTarget().y) + ", " + to_string(Camera::getInstance().getTarget().z)).c_str());
+		ImGui::Text(("Position: " + glm::to_string(Camera::getInstance().getPosition())).c_str());
+		ImGui::Text(("Target: " + glm::to_string(Camera::getInstance().getTarget())).c_str());
 		ImGui::Text(("FOV: " + to_string(Camera::getInstance().getFOV())).c_str());
 		ImGui::End();
 

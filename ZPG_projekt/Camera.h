@@ -12,21 +12,26 @@ private:
 
 	float FOV = 90;
 	float radius = 10;
-	float speed = 0.03;
+	float movementSpeed = 0.05;
 	float mouseSensitivity = 0.1;
 
-	glm::vec3 eye{ 0.f, 0.f, 5.f };
-	glm::vec3 target{ 0.f, 0.f, -1.f };
+	float yaw = -90;
+	float pitch = -30;
+
+	glm::vec3 eye{ 0.f, 5.f, 5.f };
+	glm::vec3 target = glm::normalize(glm::vec3(cos(glm::radians(yaw)) * cos(glm::radians(pitch)),
+												sin(glm::radians(pitch)),
+												sin(glm::radians(yaw)) * cos(glm::radians(pitch))));
 	glm::vec3 up{ 0.f, 1.f, 0.f };
 
 	glm::mat4 perspective = glm::perspective(glm::radians(FOV), (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 100.0f);
 	glm::mat4 lookAt = glm::lookAt(eye, target + eye, up);
 
-	float yaw = -90;
-	float pitch = 1;
-
 	int mouse_last_x = WINDOW_WIDTH / 2;
 	int mouse_last_y = WINDOW_HEIGHT / 2;
+	
+	void changePosition();
+	void changeTarget();
 public:
 	static Camera& getInstance()
 	{
@@ -41,7 +46,6 @@ public:
 	int getFOV() const;
 
 	void setPerspective(float FOV, float width, float height);
-	void move();
 
 	void onSubjectNotification(EventType eventType, void* object) override;
 
