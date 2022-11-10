@@ -9,6 +9,7 @@ enum EventType
     MouseScrolled,
     KeyboardPressed,
     CameraMoved,
+    LightMoved,
     WindowSizeChanged
 };
 

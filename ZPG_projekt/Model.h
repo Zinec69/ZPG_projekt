@@ -15,6 +15,8 @@ namespace bush {
 #include "Models/triangle.h"
 #include "Models/cube.h"
 #include "Models/rectangle.h"
+#include "Models/plain_tex.h"
+#include "Models/skycube.h"
 
 class Model
 {

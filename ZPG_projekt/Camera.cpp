@@ -35,7 +35,7 @@ void Camera::setPerspective(float FOV, float width, float height)
 {
 	this->FOV = FOV;
 	this->perspective = glm::perspective(glm::radians(FOV), width / height, 0.1f, 100.0f);
-	notifyObservers(WindowSizeChanged, this);
+	notifyObservers(WindowSizeChanged, nullptr);
 }
 
 void Camera::changePosition()
@@ -58,7 +58,7 @@ void Camera::changePosition()
 
 		this->lookAt = glm::lookAt(this->eye, this->eye + this->target, this->up);
 
-		notifyObservers(CameraMoved, this);
+		notifyObservers(CameraMoved, nullptr);
 	}
 }
 
@@ -96,7 +96,7 @@ void Camera::changeTarget()
 
 		this->lookAt = glm::lookAt(this->eye, this->eye + this->target, this->up);
 
-		notifyObservers(CameraMoved, this);
+		notifyObservers(CameraMoved, nullptr);
 	}
 }
 
@@ -112,6 +112,12 @@ void Camera::onSubjectNotification(EventType eventType, void* object)
 	else if (eventType == MouseScrolled)
 	{
 		this->FOV -= Mouse::getInstance().scroll;
+
+		if (this->FOV > 120)
+			this->FOV = 120;
+		if (this->FOV < 1)
+			this->FOV = 1;
+
 		setPerspective(this->FOV, static_cast<float>(WINDOW_WIDTH), static_cast<float>(WINDOW_HEIGHT));
 	}
 	else if (eventType == KeyboardPressed)

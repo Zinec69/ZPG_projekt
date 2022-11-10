@@ -19,8 +19,7 @@ void Light::onSubjectNotification(EventType eventType, void* object)
 {
 	if (eventType == CameraMoved && this->isFlashlight)
 	{
-		Camera* camera = ((Camera*)object);
-		this->direction = camera->getTarget();
-		this->position = camera->getPosition();
+		this->direction = Camera::getInstance().getTarget();
+		this->position = Camera::getInstance().getPosition();
 	}
 }

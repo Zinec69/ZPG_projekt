@@ -22,6 +22,12 @@
     <Filter Include="Resource Files\imgui">
       <UniqueIdentifier>{0f9d268a-c0ca-4bc8-8605-5b1ef3e6cdbc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Textures">
+      <UniqueIdentifier>{e0164800-19ec-4d4a-8be8-6ca0a93a7499}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Textures\cubemap">
+      <UniqueIdentifier>{c39cdd02-94a4-4e48-9f4d-3a6127f55957}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GLincludes.h">
@@ -114,6 +120,9 @@
     <ClInclude Include="Observer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Models\plain_tex.h">
+      <Filter>Resource Files\Models</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -204,5 +213,34 @@
     <None Include="Shaders\vertex.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Textures\grass.png">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+    <Image Include="Textures\wooden_fence.png">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+    <Image Include="Textures\wooden_floor.png">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+    <Image Include="Textures\cubemap\negx.jpg">
+      <Filter>Resource Files\Textures\cubemap</Filter>
+    </Image>
+    <Image Include="Textures\cubemap\negy.jpg">
+      <Filter>Resource Files\Textures\cubemap</Filter>
+    </Image>
+    <Image Include="Textures\cubemap\negz.jpg">
+      <Filter>Resource Files\Textures\cubemap</Filter>
+    </Image>
+    <Image Include="Textures\cubemap\posx.jpg">
+      <Filter>Resource Files\Textures\cubemap</Filter>
+    </Image>
+    <Image Include="Textures\cubemap\posy.jpg">
+      <Filter>Resource Files\Textures\cubemap</Filter>
+    </Image>
+    <Image Include="Textures\cubemap\posz.jpg">
+      <Filter>Resource Files\Textures\cubemap</Filter>
+    </Image>
   </ItemGroup>
 </Project>

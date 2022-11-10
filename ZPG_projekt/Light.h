@@ -16,7 +16,7 @@ enum LightState
 	ON = 1,
 };
 
-class Light : public Observer
+class Light : public Observer, public Subject
 {
 private:
 

@@ -16,10 +16,12 @@ void Model::createVAO()
 	glGenVertexArrays(1, &this->VAO);
 	glBindVertexArray(this->VAO);
 	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	// glEnableVertexAttribArray(2);
 	glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (GLvoid*)0);
-	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (GLvoid*)(3 * sizeof(float)));
+	// glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (GLvoid*)(6 * sizeof(float)));
 }
 
 void Model::createVBO()

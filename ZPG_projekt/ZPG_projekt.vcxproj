@@ -38,6 +38,7 @@
     <ClInclude Include="Models\cube.h" />
     <ClInclude Include="Models\gift.h" />
     <ClInclude Include="Models\plain.h" />
+    <ClInclude Include="Models\plain_tex.h" />
     <ClInclude Include="Models\rectangle.h" />
     <ClInclude Include="Models\sphere.h" />
     <ClInclude Include="Models\suzi_flat.h" />
@@ -86,6 +87,17 @@
     <None Include="Shaders\phong.frag" />
     <None Include="Shaders\phong_1.frag" />
     <None Include="Shaders\vertex.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Textures\cubemap\negx.jpg" />
+    <Image Include="Textures\cubemap\negy.jpg" />
+    <Image Include="Textures\cubemap\negz.jpg" />
+    <Image Include="Textures\cubemap\posx.jpg" />
+    <Image Include="Textures\cubemap\posy.jpg" />
+    <Image Include="Textures\cubemap\posz.jpg" />
+    <Image Include="Textures\grass.png" />
+    <Image Include="Textures\wooden_fence.png" />
+    <Image Include="Textures\wooden_floor.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

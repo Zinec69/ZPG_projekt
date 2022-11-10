@@ -14,7 +14,7 @@ void CallbackHandler::key_callback(GLFWwindow* window, int key, int scancode, in
 	else
 		Keyboard::getInstance().key_pressed = -1;
 	Keyboard::getInstance().key_action = action;
-	Keyboard::getInstance().notifyObservers(KeyboardPressed, &Keyboard::getInstance());
+	Keyboard::getInstance().notifyObservers(KeyboardPressed, nullptr);
 }
 
 void CallbackHandler::window_focus_callback(GLFWwindow* window, int focused)
@@ -37,7 +37,7 @@ void CallbackHandler::cursor_callback(GLFWwindow* window, double x, double y)
 {
 	Mouse::getInstance().x = (int)x;
 	Mouse::getInstance().y = (int)y;
-	Mouse::getInstance().notifyObservers(MouseMoved, &Mouse::getInstance());
+	Mouse::getInstance().notifyObservers(MouseMoved, nullptr);
 }
 
 void CallbackHandler::button_callback(GLFWwindow* window, int button, int action, int mode)
@@ -46,13 +46,13 @@ void CallbackHandler::button_callback(GLFWwindow* window, int button, int action
 		Mouse::getInstance().button_clicked = button;
 	else
 		Mouse::getInstance().button_clicked = -1;
-	Mouse::getInstance().notifyObservers(MouseClicked, &Mouse::getInstance());
+	Mouse::getInstance().notifyObservers(MouseClicked, nullptr);
 }
 
 void CallbackHandler::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	Mouse::getInstance().scroll = (int)yoffset;
-	Mouse::getInstance().notifyObservers(MouseScrolled, &Mouse::getInstance);
+	Mouse::getInstance().notifyObservers(MouseScrolled, nullptr);
 }
 
 CallbackHandler::CallbackHandler(GLFWwindow* window)
