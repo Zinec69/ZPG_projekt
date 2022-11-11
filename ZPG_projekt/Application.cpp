@@ -18,9 +18,6 @@ Application::Application(int windowWidth, int windowHeight)
 
 void Application::run()
 {
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
-
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -38,29 +35,37 @@ void Application::run()
 
 	ShaderManager* shader_light_source = new ShaderManager(LIGHT_SOURCE);
 	ShaderManager* shader_multiple_lights = new ShaderManager(MULTIPLE_LIGHTS);
+	ShaderManager* shader_multiple_lights_tex = new ShaderManager(MULTIPLE_LIGHTS_TEX);
+	ShaderManager* shader_skybox = new ShaderManager(SKYBOX);
 	Camera::getInstance().registerObserver(*shader_light_source);
 	Camera::getInstance().registerObserver(*shader_multiple_lights);
+	Camera::getInstance().registerObserver(*shader_multiple_lights_tex);
+	Camera::getInstance().registerObserver(*shader_skybox);
 
-	Model* model = new Model(sphere, sizeof(sphere), sizeof(sphere) / (sizeof(sphere[0]) * 6));
-	DrawObject* sphere1 = new DrawObject(model, shader_multiple_lights, sizes, glm::vec3(1, 0, 0), glm::vec3(0, 2, -2));
-	DrawObject* sphere2 = new DrawObject(model, shader_multiple_lights, sizes, glm::vec3(0, 1, 0), glm::vec3(2, 2, 0));
-	DrawObject* sphere3 = new DrawObject(model, shader_multiple_lights, sizes, glm::vec3(0, 0, 1), glm::vec3(0, 2, 2));
-	DrawObject* sphere4 = new DrawObject(model, shader_multiple_lights, sizes, glm::vec3(1, 0, 1), glm::vec3(-2, 2, 0));
+	Model* _skybox = new Model(Models::skycube, sizeof(Models::skycube), sizeof(Models::skycube) / (sizeof(Models::skycube[0]) * 3), CUBEMAP);
+	DrawObject* skybox = new DrawObject(_skybox, shader_skybox, Textures::skybox::tenerife, 20);
+
+	Model* _sphere = new Model(Models::sphere, sizeof(Models::sphere), sizeof(Models::sphere) / (sizeof(Models::sphere[0]) * 6), COLORED);
+	Model* _plane = new Model(Models::plane_tex::plain, sizeof(Models::plane_tex::plain), sizeof(Models::plane_tex::plain) / (sizeof(Models::plane_tex::plain[0]) * 8), TEXTURED);
+
+	DrawObject* plane1 = new DrawObject(_plane, shader_multiple_lights_tex, Textures::wooden_fence, sizes, glm::vec3(0, 2, -2));
+	DrawObject* plane2 = new DrawObject(_plane, shader_multiple_lights_tex, Textures::wooden_floor, sizes, glm::vec3(2, 2, 0));
+	DrawObject* plane3 = new DrawObject(_plane, shader_multiple_lights_tex, Textures::grass, sizes, glm::vec3(0, 2, 2));
+	DrawObject* plane4 = new DrawObject(_plane, shader_multiple_lights_tex, Textures::ground, sizes, glm::vec3(-2, 2, 0));
 	
 	Light point_1 = Light(POINT, glm::vec3(-glm::cos(glm::radians(light_rot)) * 4, 4, glm::sin(glm::radians(light_rot)) * 2));
 	Light point_2 = Light(POINT, glm::vec3(glm::cos(glm::radians(light_rot)) * 4, glm::sin(glm::radians(light_rot)) * 4, 0));
 	Light spot_1 = Light(SPOT, glm::vec3(0.0), glm::vec3(0.0), glm::vec3(1.0), spotLight_intensity, 0.03, 0.5, glm::cos(glm::radians(13.0)), glm::cos(glm::radians(22.0)), true);
-	Light spot_2 = Light(SPOT, glm::vec3(0.0, 5.0, 1.0), glm::vec3(0.0, -1.0, 0.0), glm::vec3(1.0), spotLight_intensity, 0.03);
 	Light dir_1 = Light(DIRECTIONAL, glm::vec3(0.0), glm::vec3(0.0, -1.0, 0.0));
 	Camera::getInstance().registerObserver(spot_1);
 
-	DrawObject* sphere5_ls = new DrawObject(model, shader_light_source, 0.2, glm::vec3(1.0, 1.0, 1.0), glm::vec3(-glm::cos(glm::radians(light_rot)) * 4, 4, glm::sin(glm::radians(light_rot)) * 2));
-	DrawObject* sphere6_ls = new DrawObject(model, shader_light_source, 0.2, glm::vec3(1.0, 1.0, 1.0), glm::vec3(glm::cos(glm::radians(light_rot)) * 4, glm::sin(glm::radians(light_rot)) * 4, 0));
+	DrawObject* sphere5_ls = new DrawObject(_sphere, shader_light_source, 0.2, glm::vec3(-glm::cos(glm::radians(light_rot)) * 4, 4, glm::sin(glm::radians(light_rot)) * 2), glm::vec3(1.0, 1.0, 1.0));
+	DrawObject* sphere6_ls = new DrawObject(_sphere, shader_light_source, 0.2, glm::vec3(glm::cos(glm::radians(light_rot)) * 4, glm::sin(glm::radians(light_rot)) * 4, 0), glm::vec3(1.0, 1.0, 1.0));
 	point_1.registerObserver(*sphere5_ls);
 	point_2.registerObserver(*sphere6_ls);
 
-	std::vector<Light*> lights = { &point_1, &point_2, &spot_1, &spot_2, &dir_1 };
-	std::vector<DrawObject*> objects = { sphere1, sphere2, sphere3, sphere4, sphere5_ls, sphere6_ls };
+	std::vector<Light*> lights = { &point_1, &point_2, &spot_1, &dir_1 };
+	std::vector<DrawObject*> objects = { skybox, plane1, plane2, plane3, plane4, sphere5_ls, sphere6_ls };
 
 	Scene* scene1 = new Scene();
 	scene1->setLights(lights);
@@ -105,14 +110,15 @@ void Application::run()
 			}
 		}
 
-		this->getScene(1)->render();
-
-		ImGui::Begin("Spheres");
-		ImGui::SliderFloat("Sizes", &sizes, 0, 5);
-		ImGui::End();
+		this->getScene(this->currentScene)->render();
 
 		ImGui::Begin("Point");
 		ImGui::Checkbox("On", &point);
+		if (ImGui::IsItemClicked())
+		{
+			point_1.notifyObservers(LightChangedState, &point_1);
+			point_2.notifyObservers(LightChangedState, &point_2);
+		}
 		ImGui::SliderFloat("Intensity", &pointLight_intensity, 0, 10);
 		ImGui::ColorEdit3("Color", &pointLightColor.x);
 		ImGui::End();

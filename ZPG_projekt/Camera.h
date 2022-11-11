@@ -16,7 +16,7 @@ private:
 	float mouseSensitivity = 0.1;
 
 	float yaw = -90;
-	float pitch = -30;
+	float pitch = 1;
 
 	glm::vec3 eye{ 0.f, 5.f, 5.f };
 	glm::vec3 target = glm::normalize(glm::vec3(cos(glm::radians(yaw)) * cos(glm::radians(pitch)),

@@ -2,10 +2,13 @@
 
 void Scene::render()
 {
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+
 	for (int i = 0; i < this->objects.size(); i++)
 	{
-		//if (this->objects[i]->isLightSource() && !point)
-		//	continue;
+		if (!this->objects[i]->isActive())
+			continue;
 		this->objects[i]->draw(lights);
 	}
 }

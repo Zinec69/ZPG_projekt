@@ -24,6 +24,12 @@ ShaderManager::ShaderManager(shaderType type)
 	case MULTIPLE_LIGHTS:
 		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex.vert", "../ZPG_projekt/Shaders/multiple_lights.frag");
 		break;
+	case MULTIPLE_LIGHTS_TEX:
+		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex_tex.vert", "../ZPG_projekt/Shaders/multiple_lights_tex.frag");
+		break;
+	case SKYBOX:
+		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/cubemap.vert", "../ZPG_projekt/Shaders/cubemap.frag");
+		break;
 	}
 
 	this->projectionMat = Camera::getInstance().getPerspective();
@@ -62,7 +68,7 @@ void ShaderManager::setMat(glm::mat4 mat, const std::string name)
 		err += name;
 		err += "' not found\n";
 		fprintf(stderr, err.c_str());
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 	else glUniformMatrix4fv(modelId, 1, GL_FALSE, &mat[0][0]);
 }
@@ -76,7 +82,7 @@ void ShaderManager::setVec3(glm::vec3 vec, const std::string name)
 		err += name;
 		err += "' not found\n";
 		fprintf(stderr, err.c_str());
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 	else glUniform3fv(modelId, 1, &vec[0]);
 }
@@ -90,7 +96,7 @@ void ShaderManager::setFloat(float num, const std::string name)
 		err += name;
 		err += "' not found\n";
 		fprintf(stderr, err.c_str());
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 	else glUniform1f(modelId, num);
 }
@@ -104,7 +110,7 @@ void ShaderManager::setInt(int num, const std::string name)
 		err += name;
 		err += "' not found\n";
 		fprintf(stderr, err.c_str());
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 	else glUniform1i(modelId, num);
 }
@@ -113,7 +119,7 @@ void ShaderManager::setCameraData()
 {
 	setMat(this->viewMat, "view");
 	setMat(this->projectionMat, "projection");
-	if (this->type != LIGHT_SOURCE)
+	if (this->type != LIGHT_SOURCE && this->type != SKYBOX)
 		setVec3(this->cameraPosition, "viewPos");
 }
 
@@ -127,7 +133,10 @@ void ShaderManager::onSubjectNotification(EventType eventType, void* object)
 	if (eventType == CameraMoved)
 	{
 		this->cameraPosition = Camera::getInstance().getPosition();
-		this->viewMat = Camera::getInstance().getCamera();
+		if (this->type != SKYBOX)
+			this->viewMat = Camera::getInstance().getCamera();
+		else
+			this->viewMat = glm::mat4(glm::mat3(Camera::getInstance().getCamera()));
 	}
 	else if (eventType == WindowSizeChanged)
 	{

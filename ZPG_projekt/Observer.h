@@ -10,6 +10,7 @@ enum EventType
     KeyboardPressed,
     CameraMoved,
     LightMoved,
+    LightChangedState,
     WindowSizeChanged
 };
 

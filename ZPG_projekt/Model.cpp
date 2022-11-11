@@ -1,11 +1,14 @@
 #include "Model.h"
 
-Model::Model(const float vertices[], int size, int num_of_vertices)
+Model::Model(const float vertices[], int size, int num_of_vertices, ModelType type)
 {
 	this->vertices = vertices;
 	this->size = size;
 	this->num_of_vertices = num_of_vertices;
-	
+	this->type = type;
+
+	this->cols = (size / num_of_vertices) / sizeof(vertices[0]);
+
 	createVBO();
 	createVAO();
 }
@@ -17,11 +20,18 @@ void Model::createVAO()
 	glBindVertexArray(this->VAO);
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
-	// glEnableVertexAttribArray(2);
 	glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (GLvoid*)0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (GLvoid*)(3 * sizeof(float)));
-	// glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (GLvoid*)(6 * sizeof(float)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * this->cols, (GLvoid*)0);
+	if (this->type == COLORED)
+	{
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * this->cols, (GLvoid*)(sizeof(float) * 3));
+	}
+	else if (this->type == TEXTURED)
+	{
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * this->cols, (GLvoid*)(sizeof(float) * 3));
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * this->cols, (GLvoid*)(sizeof(float) * 6));
+	}
 }
 
 void Model::createVBO()
@@ -36,4 +46,9 @@ void Model::draw()
 {
 	glBindVertexArray(this->VAO);
 	glDrawArrays(GL_TRIANGLES, 0, this->num_of_vertices);
+}
+
+ModelType Model::getType()
+{
+	return this->type;
 }

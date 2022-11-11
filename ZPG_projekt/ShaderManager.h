@@ -14,6 +14,8 @@ enum shaderType
 	PHONG_1,
 	BLINN,
 	MULTIPLE_LIGHTS,
+	MULTIPLE_LIGHTS_TEX,
+	SKYBOX,
 };
 
 class ShaderManager : ShaderLoader, public Observer

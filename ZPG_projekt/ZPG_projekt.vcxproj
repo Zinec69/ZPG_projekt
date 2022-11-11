@@ -27,6 +27,22 @@
     <ClInclude Include="..\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\imgui\imstb_textedit.h" />
     <ClInclude Include="..\imgui\imstb_truetype.h" />
+    <ClInclude Include="..\Libraries\SOIL2\image_DXT.h" />
+    <ClInclude Include="..\Libraries\SOIL2\image_helper.h" />
+    <ClInclude Include="..\Libraries\SOIL2\pkm_helper.h" />
+    <ClInclude Include="..\Libraries\SOIL2\pvr_helper.h" />
+    <ClInclude Include="..\Libraries\SOIL2\SOIL2.h" />
+    <ClInclude Include="..\Libraries\SOIL2\stbi_DDS.h" />
+    <ClInclude Include="..\Libraries\SOIL2\stbi_DDS_c.h" />
+    <ClInclude Include="..\Libraries\SOIL2\stbi_ext.h" />
+    <ClInclude Include="..\Libraries\SOIL2\stbi_ext_c.h" />
+    <ClInclude Include="..\Libraries\SOIL2\stbi_pkm.h" />
+    <ClInclude Include="..\Libraries\SOIL2\stbi_pkm_c.h" />
+    <ClInclude Include="..\Libraries\SOIL2\stbi_pvr.h" />
+    <ClInclude Include="..\Libraries\SOIL2\stbi_pvr_c.h" />
+    <ClInclude Include="..\Libraries\SOIL2\stb_image.h" />
+    <ClInclude Include="..\Libraries\SOIL2\stb_image_write.h" />
+    <ClInclude Include="..\Libraries\SOIL2\wfETC.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="CallbackHandler.h" />
     <ClInclude Include="Camera.h" />
@@ -36,10 +52,12 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="Models\bushes.h" />
     <ClInclude Include="Models\cube.h" />
+    <ClInclude Include="Models\cube_tex.h" />
     <ClInclude Include="Models\gift.h" />
     <ClInclude Include="Models\plain.h" />
     <ClInclude Include="Models\plain_tex.h" />
     <ClInclude Include="Models\rectangle.h" />
+    <ClInclude Include="Models\skycube.h" />
     <ClInclude Include="Models\sphere.h" />
     <ClInclude Include="Models\suzi_flat.h" />
     <ClInclude Include="Models\suzi_smooth.h" />
@@ -59,6 +77,10 @@
     <ClCompile Include="..\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\Libraries\SOIL2\image_DXT.c" />
+    <ClCompile Include="..\Libraries\SOIL2\image_helper.c" />
+    <ClCompile Include="..\Libraries\SOIL2\SOIL2.c" />
+    <ClCompile Include="..\Libraries\SOIL2\wfETC.c" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="CallbackHandler.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -80,13 +102,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\blinn.frag" />
+    <None Include="Shaders\cubemap.frag" />
+    <None Include="Shaders\cubemap.vert" />
     <None Include="Shaders\lambert.frag" />
     <None Include="Shaders\light_source.frag" />
     <None Include="Shaders\light_source.vert" />
     <None Include="Shaders\multiple_lights.frag" />
+    <None Include="Shaders\multiple_lights_tex.frag" />
     <None Include="Shaders\phong.frag" />
     <None Include="Shaders\phong_1.frag" />
     <None Include="Shaders\vertex.vert" />
+    <None Include="Shaders\vertex_tex.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\cubemap\negx.jpg" />
@@ -185,7 +211,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Libraries\glm;..\Libraries\glfw-3.3.8.bin.WIN64\include;..\Libraries\glew-2.2.0\include;..\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\SOIL2;..\Libraries\glm;..\Libraries\glfw-3.3.8.bin.WIN64\include;..\Libraries\glew-2.2.0\include;..\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

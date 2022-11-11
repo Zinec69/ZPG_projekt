@@ -28,6 +28,9 @@
     <Filter Include="Resource Files\Textures\cubemap">
       <UniqueIdentifier>{c39cdd02-94a4-4e48-9f4d-3a6127f55957}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\SOIL2">
+      <UniqueIdentifier>{081cf125-94bd-4942-a259-469103ec78f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GLincludes.h">
@@ -123,6 +126,60 @@
     <ClInclude Include="Models\plain_tex.h">
       <Filter>Resource Files\Models</Filter>
     </ClInclude>
+    <ClInclude Include="Models\skycube.h">
+      <Filter>Resource Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\SOIL2\SOIL2.h">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\SOIL2\image_DXT.h">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\SOIL2\image_helper.h">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\SOIL2\pkm_helper.h">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\SOIL2\pvr_helper.h">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\SOIL2\stb_image.h">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\SOIL2\stb_image_write.h">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\SOIL2\stbi_DDS.h">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\SOIL2\stbi_DDS_c.h">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\SOIL2\stbi_ext.h">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\SOIL2\stbi_ext_c.h">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\SOIL2\stbi_pkm.h">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\SOIL2\stbi_pkm_c.h">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\SOIL2\stbi_pvr.h">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\SOIL2\stbi_pvr_c.h">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\SOIL2\wfETC.h">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\cube_tex.h">
+      <Filter>Resource Files\Models</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -182,6 +239,18 @@
     <ClCompile Include="Observer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Libraries\SOIL2\SOIL2.c">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\SOIL2\image_DXT.c">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\SOIL2\image_helper.c">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\SOIL2\wfETC.c">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="..\Libraries\glew-2.2.0\bin\Release\x64\glew32.dll">
@@ -211,6 +280,18 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="Shaders\vertex.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Shaders\multiple_lights_tex.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Shaders\vertex_tex.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Shaders\cubemap.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Shaders\cubemap.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

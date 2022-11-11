@@ -1,35 +1,73 @@
 #include "DrawObject.h"
 
-DrawObject::DrawObject(Model* model, ShaderManager* shader, float scale, glm::vec3 color, glm::vec3 position)
+DrawObject::DrawObject(Model* model, ShaderManager* shader, float scale, glm::vec3 position, glm::vec3 color)
 {
 	this->model = model;
 	this->shader = shader;
-	this->color = color;
 	this->scale = scale;
 	this->object = glm::translate(glm::mat4{ 1.0 }, position);
+	this->color = color;
+}
+
+DrawObject::DrawObject(Model* model, ShaderManager* shader, const char* texture_filename, float scale, glm::vec3 position)
+{
+	this->model = model;
+	this->shader = shader;
+	this->scale = scale;
+	this->object = glm::translate(glm::mat4{ 1.0 }, position);
+	if (model->getType() == CUBEMAP)
+		this->texture = loadCubemap(texture_filename);
+	else
+		this->texture = loadTexture(texture_filename);
+}
+
+DrawObject::DrawObject(Model* model, ShaderManager* shader, const char* texture_filenames[6], float scale)
+{
+	this->model = model;
+	this->shader = shader;
+	this->scale = scale;
+	this->object = glm::translate(glm::mat4{ 1.0 }, glm::vec3(0.0));
+	this->texture = loadCubemap(texture_filenames);
 }
 
 void DrawObject::draw(std::vector<Light*> lights)
 {
+	//if (this->model->getType() == CUBEMAP)
+	//	glDepthMask(GL_FALSE);
+
 	this->shader->useProgram();
 
 	this->shader->setCameraData();
+		
+	this->applyTextures();
 
-	this->shader->setMat(this->object, "model");
+	if (this->shader->getType() != SKYBOX)
+		this->shader->setMat(this->object, "model");
+	
 	this->shader->setFloat(this->scale, "scale");
 
-	if (this->shader->getType() != LIGHT_SOURCE)
+	if (this->shader->getType() == SKYBOX)
 	{
-		this->shader->setVec3(this->color, "objectColor");
+		this->shader->setInt(0, "SkyBox");
+	}
+	else if (this->shader->getType() != LIGHT_SOURCE)
+	{
+		if (this->model->getType() == COLORED)
+			this->shader->setVec3(this->color, "objectColor");
 
-		if (this->shader->getType() != MULTIPLE_LIGHTS)
+		if (this->shader->getType() != MULTIPLE_LIGHTS && this->shader->getType() != MULTIPLE_LIGHTS_TEX)
 		{
-			this->shader->setVec3(glm::vec3(0.0, 0.0, 0.0), "lightPos");
+			this->shader->setVec3(lights[0]->position, "lightPos");
 			this->shader->setVec3(lights[0]->color, "lightColor");
 		}
 		else
 		{
-			this->shader->setInt(this->material.shininess, "material.shininess");
+			this->shader->setFloat(this->material.shininess, "material.shininess");
+			if (this->model->getType() == TEXTURED)
+			{
+				this->shader->setInt(0, "material.diffuse");
+				this->shader->setInt(1, "material.specular");
+			}
 
 			for (int i = 0; i < lights.size(); i++)
 			{
@@ -52,6 +90,9 @@ void DrawObject::draw(std::vector<Light*> lights)
 		this->shader->setVec3(lights[0]->color, "lightColor");
 
 	this->model->draw();
+
+	//if (this->model->getType() == CUBEMAP)
+	//	glDepthMask(GL_TRUE);
 }
 
 void DrawObject::rotate(float angle, glm::vec3 axis)
@@ -96,10 +137,65 @@ bool DrawObject::isLightSource() const
 	return this->shader->getType() == LIGHT_SOURCE;
 }
 
+bool DrawObject::isCubeMap() const
+{
+	return this->model->getType() == CUBEMAP;
+}
+
+bool DrawObject::isActive() const
+{
+	return this->active;
+}
+
+GLuint DrawObject::loadTexture(const char* filename)
+{
+	GLuint image = SOIL_load_OGL_texture(filename, SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+	if (image == 0)
+	{
+		std::cout << "An error occurred while loading texture image\n";
+		exit(EXIT_FAILURE);
+	}
+	return image;
+}
+
+GLuint DrawObject::loadCubemap(const char* filenames[6])
+{
+	GLuint image = SOIL_load_OGL_cubemap(filenames[0], filenames[1], filenames[2], filenames[3], filenames[4], filenames[5], SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS);
+	if (image == 0)
+	{
+		std::cout << "An error occurred while loading multi-file cubemap texture\n";
+		exit(EXIT_FAILURE);
+	}
+	return image;
+}
+
+GLuint DrawObject::loadCubemap(const char* filename)
+{
+	GLuint image = SOIL_load_OGL_single_cubemap(filename, SOIL_DDS_CUBEMAP_FACE_ORDER, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS);
+	if (image == 0)
+	{
+		std::cout << "An error occurred while loading single-file cubemap texture\n";
+		exit(EXIT_FAILURE);
+	}
+	return image;
+}
+
+void DrawObject::applyTextures()
+{
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, this->texture);
+	if (isCubeMap())
+		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+}
+
 void DrawObject::onSubjectNotification(EventType eventType, void* object)
 {
 	if (eventType == LightMoved)
 	{
 		move(((Light*)object)->position);
+	}
+	else if (eventType == LightChangedState)
+	{
+		this->active = !this->active;
 	}
 }
