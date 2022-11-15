@@ -28,10 +28,11 @@ namespace Models {
 	}
 }
 
-enum ModelType {
+enum class ModelType {
 	COLORED,
 	TEXTURED,
 	CUBEMAP,
+	SKYBOX,
 };
 
 class Model

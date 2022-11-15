@@ -66,7 +66,7 @@ public:
 	GLuint loadCubemap(const char* filename);
 	void applyTextures();
 	bool isLightSource() const;
-	bool isCubeMap() const;
+	bool isSkyBox() const;
 	bool isActive() const;
 
 	void onSubjectNotification(EventType eventType, void* object);

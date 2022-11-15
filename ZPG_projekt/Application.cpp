@@ -30,23 +30,23 @@ void Application::run()
 
 	glm::vec3 pointLightColor{ 1, 1, 1 }, spotLightColor{ 1, 1, 1 }, directionalLightColor{ 1, 1, 1 };
 	float sizes = 1;
-	float spotLightCutOff = 13.0;
+	float spotLightCutOff = 22.0;
 	bool spot = true, point = true, direct = false;
 
-	ShaderManager* shader_light_source = new ShaderManager(LIGHT_SOURCE);
-	ShaderManager* shader_multiple_lights = new ShaderManager(MULTIPLE_LIGHTS);
-	ShaderManager* shader_multiple_lights_tex = new ShaderManager(MULTIPLE_LIGHTS_TEX);
-	ShaderManager* shader_skybox = new ShaderManager(SKYBOX);
+	ShaderManager* shader_light_source = new ShaderManager(shaderType::LIGHT_SOURCE);
+	ShaderManager* shader_multiple_lights = new ShaderManager(shaderType::MULTIPLE_LIGHTS);
+	ShaderManager* shader_multiple_lights_tex = new ShaderManager(shaderType::MULTIPLE_LIGHTS_TEX);
+	ShaderManager* shader_skybox = new ShaderManager(shaderType::SKYBOX);
 	Camera::getInstance().registerObserver(*shader_light_source);
 	Camera::getInstance().registerObserver(*shader_multiple_lights);
 	Camera::getInstance().registerObserver(*shader_multiple_lights_tex);
 	Camera::getInstance().registerObserver(*shader_skybox);
 
-	Model* _skybox = new Model(Models::skycube, sizeof(Models::skycube), sizeof(Models::skycube) / (sizeof(Models::skycube[0]) * 3), CUBEMAP);
-	DrawObject* skybox = new DrawObject(_skybox, shader_skybox, Textures::skybox::tenerife, 20);
+	Model* _skybox = new Model(Models::skycube, sizeof(Models::skycube), sizeof(Models::skycube) / (sizeof(Models::skycube[0]) * 3), ModelType::SKYBOX);
+	DrawObject* skybox = new DrawObject(_skybox, shader_skybox, Textures::skybox::tenerife, 1);
 
-	Model* _sphere = new Model(Models::sphere, sizeof(Models::sphere), sizeof(Models::sphere) / (sizeof(Models::sphere[0]) * 6), COLORED);
-	Model* _plane = new Model(Models::plane_tex::plain, sizeof(Models::plane_tex::plain), sizeof(Models::plane_tex::plain) / (sizeof(Models::plane_tex::plain[0]) * 8), TEXTURED);
+	Model* _sphere = new Model(Models::sphere, sizeof(Models::sphere), sizeof(Models::sphere) / (sizeof(Models::sphere[0]) * 6), ModelType::COLORED);
+	Model* _plane = new Model(Models::plane_tex::plain, sizeof(Models::plane_tex::plain), sizeof(Models::plane_tex::plain) / (sizeof(Models::plane_tex::plain[0]) * 8), ModelType::TEXTURED);
 
 	DrawObject* plane1 = new DrawObject(_plane, shader_multiple_lights_tex, Textures::wooden_fence, sizes, glm::vec3(0, 2, -2));
 	DrawObject* plane2 = new DrawObject(_plane, shader_multiple_lights_tex, Textures::wooden_floor, sizes, glm::vec3(2, 2, 0));
@@ -55,7 +55,7 @@ void Application::run()
 	
 	Light point_1 = Light(POINT, glm::vec3(-glm::cos(glm::radians(light_rot)) * 4, 4, glm::sin(glm::radians(light_rot)) * 2));
 	Light point_2 = Light(POINT, glm::vec3(glm::cos(glm::radians(light_rot)) * 4, glm::sin(glm::radians(light_rot)) * 4, 0));
-	Light spot_1 = Light(SPOT, glm::vec3(0.0), glm::vec3(0.0), glm::vec3(1.0), spotLight_intensity, 0.03, 0.5, glm::cos(glm::radians(13.0)), glm::cos(glm::radians(22.0)), true);
+	Light spot_1 = Light(SPOT, glm::vec3(0.0), glm::vec3(0.0), glm::vec3(1.0), spotLight_intensity, 0.03, 0.5, glm::cos(glm::radians(22.0)), true);
 	Light dir_1 = Light(DIRECTIONAL, glm::vec3(0.0), glm::vec3(0.0, -1.0, 0.0));
 	Camera::getInstance().registerObserver(spot_1);
 
@@ -92,7 +92,6 @@ void Application::run()
 			{
 				lights[i]->state = spot ? ON : OFF;
 				lights[i]->cutOff = glm::cos(glm::radians(spotLightCutOff));
-				lights[i]->outerCutOff = glm::cos(glm::radians(spotLightCutOff + 9));
 				lights[i]->color = spotLightColor;
 				lights[i]->intensity = spotLight_intensity;
 			}
@@ -140,6 +139,7 @@ void Application::run()
 		ImGui::Text(("Position: " + glm::to_string(Camera::getInstance().getPosition())).c_str());
 		ImGui::Text(("Target: " + glm::to_string(Camera::getInstance().getTarget())).c_str());
 		ImGui::Text(("FOV: " + to_string(Camera::getInstance().getFOV())).c_str());
+		// ImGui::SliderInt("Scene", &this->currentScene, 1, this->scenes.size());
 		ImGui::End();
 
 		ImGui::Render();

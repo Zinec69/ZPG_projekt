@@ -15,7 +15,7 @@ DrawObject::DrawObject(Model* model, ShaderManager* shader, const char* texture_
 	this->shader = shader;
 	this->scale = scale;
 	this->object = glm::translate(glm::mat4{ 1.0 }, position);
-	if (model->getType() == CUBEMAP)
+	if (model->getType() == ModelType::CUBEMAP)
 		this->texture = loadCubemap(texture_filename);
 	else
 		this->texture = loadTexture(texture_filename);
@@ -38,24 +38,24 @@ void DrawObject::draw(std::vector<Light*> lights)
 	this->shader->useProgram();
 
 	this->shader->setCameraData();
-		
+	
 	this->applyTextures();
 
-	if (this->shader->getType() != SKYBOX)
+	if (this->shader->getType() != shaderType::SKYBOX)
 		this->shader->setMat(this->object, "model");
 	
 	this->shader->setFloat(this->scale, "scale");
 
-	if (this->shader->getType() == SKYBOX)
+	if (this->shader->getType() == shaderType::SKYBOX)
 	{
 		this->shader->setInt(0, "SkyBox");
 	}
-	else if (this->shader->getType() != LIGHT_SOURCE)
+	else if (this->shader->getType() != shaderType::LIGHT_SOURCE)
 	{
-		if (this->model->getType() == COLORED)
+		if (this->model->getType() == ModelType::COLORED)
 			this->shader->setVec3(this->color, "objectColor");
 
-		if (this->shader->getType() != MULTIPLE_LIGHTS && this->shader->getType() != MULTIPLE_LIGHTS_TEX)
+		if (this->shader->getType() != shaderType::MULTIPLE_LIGHTS && this->shader->getType() != shaderType::MULTIPLE_LIGHTS_TEX)
 		{
 			this->shader->setVec3(lights[0]->position, "lightPos");
 			this->shader->setVec3(lights[0]->color, "lightColor");
@@ -63,7 +63,7 @@ void DrawObject::draw(std::vector<Light*> lights)
 		else
 		{
 			this->shader->setFloat(this->material.shininess, "material.shininess");
-			if (this->model->getType() == TEXTURED)
+			if (this->model->getType() == ModelType::TEXTURED)
 			{
 				this->shader->setInt(0, "material.diffuse");
 				this->shader->setInt(1, "material.specular");
@@ -80,7 +80,6 @@ void DrawObject::draw(std::vector<Light*> lights)
 				this->shader->setVec3(lights[i]->position, "lights[" + to_string(i) + "].position");
 				this->shader->setVec3(lights[i]->direction, "lights[" + to_string(i) + "].direction");
 				this->shader->setFloat(lights[i]->cutOff, "lights[" + to_string(i) + "].cutOff");
-				this->shader->setFloat(lights[i]->outerCutOff, "lights[" + to_string(i) + "].outerCutOff");
 			}
 
 			this->shader->setInt(lights.size() <= 100 ? lights.size() : 100, "numOfLights");
@@ -134,12 +133,12 @@ void DrawObject::changeShininess(int shininess)
 
 bool DrawObject::isLightSource() const
 {
-	return this->shader->getType() == LIGHT_SOURCE;
+	return this->shader->getType() == shaderType::LIGHT_SOURCE;
 }
 
-bool DrawObject::isCubeMap() const
+bool DrawObject::isSkyBox() const
 {
-	return this->model->getType() == CUBEMAP;
+	return this->model->getType() == ModelType::SKYBOX;
 }
 
 bool DrawObject::isActive() const
@@ -184,7 +183,7 @@ void DrawObject::applyTextures()
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, this->texture);
-	if (isCubeMap())
+	if (isSkyBox())
 		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 }
 

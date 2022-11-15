@@ -7,6 +7,11 @@ void Scene::render()
 
 	for (int i = 0; i < this->objects.size(); i++)
 	{
+		if (this->objects[i]->isSkyBox() && i > 0)
+		{
+			fprintf(stderr, "SkyBox must be te first object to render\n");
+			exit(EXIT_FAILURE);
+		}
 		if (!this->objects[i]->isActive())
 			continue;
 		this->objects[i]->draw(lights);

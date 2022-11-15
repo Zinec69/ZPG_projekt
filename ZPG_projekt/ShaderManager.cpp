@@ -6,28 +6,28 @@ ShaderManager::ShaderManager(shaderType type)
 
 	switch (this->type)
 	{
-	case LIGHT_SOURCE:
+	case shaderType::LIGHT_SOURCE:
 		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/light_source.vert", "../ZPG_projekt/Shaders/light_source.frag");
 		break;
-	case LAMBERT:
+	case shaderType::LAMBERT:
 		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex.vert", "../ZPG_projekt/Shaders/lambert.frag");
 		break;
-	case PHONG:
+	case shaderType::PHONG:
 		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex.vert", "../ZPG_projekt/Shaders/phong.frag");
 		break;
-	case PHONG_1:
+	case shaderType::PHONG_1:
 		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex.vert", "../ZPG_projekt/Shaders/phong_1.frag");
 		break;
-	case BLINN:
+	case shaderType::BLINN:
 		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex.vert", "../ZPG_projekt/Shaders/blinn.frag");
 		break;
-	case MULTIPLE_LIGHTS:
+	case shaderType::MULTIPLE_LIGHTS:
 		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex.vert", "../ZPG_projekt/Shaders/multiple_lights.frag");
 		break;
-	case MULTIPLE_LIGHTS_TEX:
+	case shaderType::MULTIPLE_LIGHTS_TEX:
 		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex_tex.vert", "../ZPG_projekt/Shaders/multiple_lights_tex.frag");
 		break;
-	case SKYBOX:
+	case shaderType::SKYBOX:
 		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/cubemap.vert", "../ZPG_projekt/Shaders/cubemap.frag");
 		break;
 	}
@@ -119,7 +119,7 @@ void ShaderManager::setCameraData()
 {
 	setMat(this->viewMat, "view");
 	setMat(this->projectionMat, "projection");
-	if (this->type != LIGHT_SOURCE && this->type != SKYBOX)
+	if (this->type != shaderType::LIGHT_SOURCE && this->type != shaderType::SKYBOX)
 		setVec3(this->cameraPosition, "viewPos");
 }
 
@@ -133,7 +133,7 @@ void ShaderManager::onSubjectNotification(EventType eventType, void* object)
 	if (eventType == CameraMoved)
 	{
 		this->cameraPosition = Camera::getInstance().getPosition();
-		if (this->type != SKYBOX)
+		if (this->type != shaderType::SKYBOX)
 			this->viewMat = Camera::getInstance().getCamera();
 		else
 			this->viewMat = glm::mat4(glm::mat3(Camera::getInstance().getCamera()));

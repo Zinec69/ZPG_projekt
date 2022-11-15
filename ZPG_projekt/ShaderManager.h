@@ -6,7 +6,7 @@
 #include "Observer.h"
 #include <vector>
 
-enum shaderType
+enum class shaderType
 {
 	LIGHT_SOURCE,
 	LAMBERT,

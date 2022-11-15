@@ -22,11 +22,11 @@ void Model::createVAO()
 	glEnableVertexAttribArray(1);
 	glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * this->cols, (GLvoid*)0);
-	if (this->type == COLORED)
+	if (this->type == ModelType::COLORED)
 	{
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * this->cols, (GLvoid*)(sizeof(float) * 3));
 	}
-	else if (this->type == TEXTURED)
+	else if (this->type == ModelType::TEXTURED)
 	{
 		glEnableVertexAttribArray(2);
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * this->cols, (GLvoid*)(sizeof(float) * 3));
@@ -46,6 +46,8 @@ void Model::draw()
 {
 	glBindVertexArray(this->VAO);
 	glDrawArrays(GL_TRIANGLES, 0, this->num_of_vertices);
+	if (getType() == ModelType::SKYBOX)
+		glClear(GL_DEPTH_BUFFER_BIT);
 }
 
 ModelType Model::getType()

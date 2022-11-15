@@ -20,7 +20,6 @@ struct Light
 	vec3 direction;
 
 	float cutOff;
-	float outerCutOff;
 };
 
 #define NUM_OF_LIGHTS 100
@@ -97,8 +96,8 @@ vec3 CalcSpotLight(Light light, vec3 normal, vec3 viewDir)
     vec3 lightDir = normalize(light.position - FragPos);
     
     float theta     = dot(lightDir, normalize(-light.direction));
-    float epsilon   = light.cutOff - light.outerCutOff;
-    float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
+    float epsilon   = 1 - light.cutOff;
+    float intensity = (theta - light.cutOff) / epsilon;
     
     float distance    = length(light.position - FragPos);
     float attenuation = 1.0 / (1.0 + 0.09 * distance + 0.032 * (distance * distance));
