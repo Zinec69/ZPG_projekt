@@ -133,10 +133,7 @@ void ShaderManager::onSubjectNotification(EventType eventType, void* object)
 	if (eventType == CameraMoved)
 	{
 		this->cameraPosition = Camera::getInstance().getPosition();
-		if (this->type != shaderType::SKYBOX)
-			this->viewMat = Camera::getInstance().getCamera();
-		else
-			this->viewMat = glm::mat4(glm::mat3(Camera::getInstance().getCamera()));
+		this->viewMat = Camera::getInstance().getCamera();
 	}
 	else if (eventType == WindowSizeChanged)
 	{
