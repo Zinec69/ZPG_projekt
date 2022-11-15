@@ -9,7 +9,7 @@ void Scene::render()
 	{
 		if (this->objects[i]->isSkyBox() && i > 0)
 		{
-			fprintf(stderr, "SkyBox must be te first object to render\n");
+			fprintf(stderr, "SkyBox must be the first object to render\n");
 			exit(EXIT_FAILURE);
 		}
 		if (!this->objects[i]->isActive())

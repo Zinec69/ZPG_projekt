@@ -294,6 +294,7 @@
     <None Include="Shaders\cubemap.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\grass.png">

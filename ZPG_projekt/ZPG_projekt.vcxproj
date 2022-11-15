@@ -101,6 +101,7 @@
     </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="Shaders\blinn.frag" />
     <None Include="Shaders\cubemap.frag" />
     <None Include="Shaders\cubemap.vert" />
