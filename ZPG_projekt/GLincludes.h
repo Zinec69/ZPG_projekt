@@ -16,3 +16,16 @@
 
 extern const int WINDOW_WIDTH;
 extern const int WINDOW_HEIGHT;
+
+static inline void PrintMatrix(glm::mat4 mat)
+{
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			printf("%f ", mat[i][j]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+}

@@ -26,48 +26,60 @@ void Application::run()
 	ImGui_ImplOpenGL3_Init("#version 330");
 
 	float x_rot = 0, y_rot = 0, tri_rot = 0, light_rot = 0;
-	float spotLight_intensity = 1, pointLight_intensity = 1, directLight_intensity = 1;
+	float spotLight_intensity = 1, pointLight_intensity = 3, directLight_intensity = 0.5;
 
-	glm::vec3 pointLightColor{ 1, 1, 1 }, spotLightColor{ 1, 1, 1 }, directionalLightColor{ 1, 1, 1 };
+	glm::vec3 pointLightColor{ 1, 1, 0 }, spotLightColor{ 1, 1, 1 }, directionalLightColor{ 1, 1, 1 };
 	float sizes = 1;
 	float spotLightCutOff = 22.0;
-	bool spot = true, point = true, direct = false;
+	bool spot = false, point = true, direct = false;
 
-	ShaderManager* shader_light_source = new ShaderManager(shaderType::LIGHT_SOURCE);
-	ShaderManager* shader_multiple_lights = new ShaderManager(shaderType::MULTIPLE_LIGHTS);
-	ShaderManager* shader_multiple_lights_tex = new ShaderManager(shaderType::MULTIPLE_LIGHTS_TEX);
-	ShaderManager* shader_skybox = new ShaderManager(shaderType::SKYBOX);
-	Camera::getInstance().registerObserver(*shader_light_source);
-	Camera::getInstance().registerObserver(*shader_multiple_lights);
-	Camera::getInstance().registerObserver(*shader_multiple_lights_tex);
-	Camera::getInstance().registerObserver(*shader_skybox);
+	Scene* scene1 = new Scene();
+
+	ShaderManager* shader_light_source = new ShaderManager(ShaderType::LIGHT_SOURCE);
+	ShaderManager* shader_multiple_lights_tex = new ShaderManager(ShaderType::MULTIPLE_LIGHTS_TEX);
+	ShaderManager* shader_skybox = new ShaderManager(ShaderType::SKYBOX);
+	scene1->addShader(shader_light_source);
+	scene1->addShader(shader_multiple_lights_tex);
+	scene1->addShader(shader_skybox);
 
 	Model* _skybox = new Model(Models::skycube, sizeof(Models::skycube), sizeof(Models::skycube) / (sizeof(Models::skycube[0]) * 3), ModelType::SKYBOX);
 	DrawObject* skybox = new DrawObject(_skybox, shader_skybox, Textures::skybox::tenerife, 1);
 
 	Model* _sphere = new Model(Models::sphere, sizeof(Models::sphere), sizeof(Models::sphere) / (sizeof(Models::sphere[0]) * 6), ModelType::COLORED);
-	Model* _plane = new Model(Models::plane_tex::plain, sizeof(Models::plane_tex::plain), sizeof(Models::plane_tex::plain) / (sizeof(Models::plane_tex::plain[0]) * 8), ModelType::TEXTURED);
+	Model* _house_obj = new Model("Models/house.obj");
+	Model* _terrain_obj = new Model("Models/teren.obj");
+	Model* _tree_obj = new Model("Models/tree.obj");
+	Model* _zombie_obj = new Model("Models/zombie.obj");
+	scene1->addModel(_sphere, "sphere");
+	scene1->addModel(_house_obj, "house");
+	scene1->addModel(_terrain_obj, "terrain");
+	scene1->addModel(_tree_obj, "tree");
+	scene1->addModel(_zombie_obj, "zombie");
 
-	DrawObject* plane1 = new DrawObject(_plane, shader_multiple_lights_tex, Textures::wooden_fence, sizes, glm::vec3(0, 2, -2));
-	DrawObject* plane2 = new DrawObject(_plane, shader_multiple_lights_tex, Textures::wooden_floor, sizes, glm::vec3(2, 2, 0));
-	DrawObject* plane3 = new DrawObject(_plane, shader_multiple_lights_tex, Textures::grass, sizes, glm::vec3(0, 2, 2));
-	DrawObject* plane4 = new DrawObject(_plane, shader_multiple_lights_tex, Textures::ground, sizes, glm::vec3(-2, 2, 0));
+	DrawObject* house = new DrawObject(_house_obj, shader_multiple_lights_tex, "Textures/house.png", sizes, glm::vec3(0, 0, -6));
+	house->rotate(90, glm::vec3(0.f, 1.f, 0.f));
+
+	DrawObject* terrain = new DrawObject(_terrain_obj, shader_multiple_lights_tex, Textures::grass, sizes, glm::vec3(0.f));
+	DrawObject* tree = new DrawObject(_tree_obj, shader_multiple_lights_tex, "Textures/tree_1.png", 0.75, glm::vec3(-6, 0, 0));
+	DrawObject* zombie = new DrawObject(_zombie_obj, shader_multiple_lights_tex, "Textures/zombie.png", 1, glm::vec3(-2, 0, -1));
 	
-	Light point_1 = Light(POINT, glm::vec3(-glm::cos(glm::radians(light_rot)) * 4, 4, glm::sin(glm::radians(light_rot)) * 2));
-	Light point_2 = Light(POINT, glm::vec3(glm::cos(glm::radians(light_rot)) * 4, glm::sin(glm::radians(light_rot)) * 4, 0));
-	Light spot_1 = Light(SPOT, glm::vec3(0.0), glm::vec3(0.0), glm::vec3(1.0), spotLight_intensity, 0.03, 0.5, glm::cos(glm::radians(22.0)), true);
-	Light dir_1 = Light(DIRECTIONAL, glm::vec3(0.0), glm::vec3(0.0, -1.0, 0.0));
+	Light point_1 = Light(POINT, glm::vec3(0.0));
+	point_1.attenuation = 50;
+	point_1.intensity = 5;
+
+	Light spot_1 = Light(SPOT, glm::vec3(0.0));
+	spot_1.isFlashlight = true;
+	spot_1.ambientStrength = 0.03;
 	Camera::getInstance().registerObserver(spot_1);
 
-	DrawObject* sphere5_ls = new DrawObject(_sphere, shader_light_source, 0.2, glm::vec3(-glm::cos(glm::radians(light_rot)) * 4, 4, glm::sin(glm::radians(light_rot)) * 2), glm::vec3(1.0, 1.0, 1.0));
-	DrawObject* sphere6_ls = new DrawObject(_sphere, shader_light_source, 0.2, glm::vec3(glm::cos(glm::radians(light_rot)) * 4, glm::sin(glm::radians(light_rot)) * 4, 0), glm::vec3(1.0, 1.0, 1.0));
-	point_1.registerObserver(*sphere5_ls);
-	point_2.registerObserver(*sphere6_ls);
+	Light dir_1 = Light(DIRECTIONAL, glm::vec3(0.0), glm::vec3(0.0, -1.0, 0.0));
 
-	std::vector<Light*> lights = { &point_1, &point_2, &spot_1, &dir_1 };
-	std::vector<DrawObject*> objects = { skybox, plane1, plane2, plane3, plane4, sphere5_ls, sphere6_ls };
+	DrawObject* sun = new DrawObject(_sphere, shader_light_source, 3, glm::vec3(0.0), glm::vec3(1.0, 1.0, 0.0));
+	point_1.registerObserver(*sun);
 
-	Scene* scene1 = new Scene();
+	std::vector<Light*> lights = { &point_1, &spot_1, &dir_1 };
+	std::vector<DrawObject*> objects = { skybox, terrain, house, zombie, tree, sun };
+
 	scene1->setLights(lights);
 	scene1->setObjects(objects);
 
@@ -75,16 +87,14 @@ void Application::run()
 
 	while (!this->window->shouldClose())
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		point_1.position = glm::vec3(-glm::cos(glm::radians(light_rot)) * 4, 4, glm::sin(glm::radians(light_rot)) * 2);
+		point_1.position = glm::vec3(glm::cos(glm::radians(light_rot)) * 100, glm::sin(glm::radians(light_rot)) * 100, glm::cos(glm::radians(light_rot)) * 50);
 		point_1.notifyObservers(LightMoved, &point_1);
-		point_2.position = glm::vec3(glm::cos(glm::radians(light_rot)) * 4, glm::sin(glm::radians(light_rot)) * 4, 0);
-		point_2.notifyObservers(LightMoved, &point_2);
 		
 		for (int i = 0; i < lights.size(); i++)
 		{
@@ -116,7 +126,6 @@ void Application::run()
 		if (ImGui::IsItemClicked())
 		{
 			point_1.notifyObservers(LightChangedState, &point_1);
-			point_2.notifyObservers(LightChangedState, &point_2);
 		}
 		ImGui::SliderFloat("Intensity", &pointLight_intensity, 0, 10);
 		ImGui::ColorEdit3("Color", &pointLightColor.x);
@@ -149,7 +158,7 @@ void Application::run()
 		glfwPollEvents();
 
 		tri_rot--;
-		light_rot++;
+		light_rot += 0.2;
 	}
 
 	ImGui_ImplOpenGL3_Shutdown();

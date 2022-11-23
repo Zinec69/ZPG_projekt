@@ -29,7 +29,7 @@
       <UniqueIdentifier>{c39cdd02-94a4-4e48-9f4d-3a6127f55957}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\SOIL2">
-      <UniqueIdentifier>{081cf125-94bd-4942-a259-469103ec78f5}</UniqueIdentifier>
+      <UniqueIdentifier>{dbea5122-2775-44ca-b32f-40aa74880db4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -129,8 +129,8 @@
     <ClInclude Include="Models\skycube.h">
       <Filter>Resource Files\Models</Filter>
     </ClInclude>
-    <ClInclude Include="..\Libraries\SOIL2\SOIL2.h">
-      <Filter>Resource Files\SOIL2</Filter>
+    <ClInclude Include="Models\cube_tex.h">
+      <Filter>Resource Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="..\Libraries\SOIL2\image_DXT.h">
       <Filter>Resource Files\SOIL2</Filter>
@@ -142,6 +142,9 @@
       <Filter>Resource Files\SOIL2</Filter>
     </ClInclude>
     <ClInclude Include="..\Libraries\SOIL2\pvr_helper.h">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\SOIL2\SOIL2.h">
       <Filter>Resource Files\SOIL2</Filter>
     </ClInclude>
     <ClInclude Include="..\Libraries\SOIL2\stb_image.h">
@@ -176,9 +179,6 @@
     </ClInclude>
     <ClInclude Include="..\Libraries\SOIL2\wfETC.h">
       <Filter>Resource Files\SOIL2</Filter>
-    </ClInclude>
-    <ClInclude Include="Models\cube_tex.h">
-      <Filter>Resource Files\Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -239,13 +239,13 @@
     <ClCompile Include="Observer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Libraries\SOIL2\SOIL2.c">
-      <Filter>Resource Files\SOIL2</Filter>
-    </ClCompile>
     <ClCompile Include="..\Libraries\SOIL2\image_DXT.c">
       <Filter>Resource Files\SOIL2</Filter>
     </ClCompile>
     <ClCompile Include="..\Libraries\SOIL2\image_helper.c">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\SOIL2\SOIL2.c">
       <Filter>Resource Files\SOIL2</Filter>
     </ClCompile>
     <ClCompile Include="..\Libraries\SOIL2\wfETC.c">
@@ -254,6 +254,9 @@
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="..\Libraries\glew-2.2.0\bin\Release\x64\glew32.dll">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="..\Libraries\assimp\bin\x64\v141\Release\assimp-vc140-mt.dll">
       <Filter>Resource Files</Filter>
     </CopyFileToFolders>
   </ItemGroup>

@@ -23,22 +23,22 @@ private:
 public:
 	glm::vec3 position;
 	glm::vec3 direction;
-	glm::vec3 color;
+	glm::vec3 color{ 1.f };
 
 	LightType type;
-	bool isFlashlight;
-	LightState state;
+	LightState state = ON;
+	bool isFlashlight = false;
 
-	float ambientStrength;
-	float specularStrength;
+	float ambientStrength = 0.1;
+	float specularStrength = 0.5;
 
-	float intensity;
+	float intensity = 1;
+	float attenuation = 1;
 
-	float cutOff;
+	float cutOff = glm::cos(glm::radians(22.0));
 
-	Light(LightType type, glm::vec3 position, glm::vec3 direction = glm::vec3(0.0), glm::vec3 color = glm::vec3(1.0), float intensity = 1.0, 
-		float ambientStrength = 0.1, float specularStrength = 0.5, float cutOff = glm::cos(glm::radians(22.0)), 
-		bool isFlashlight = false, LightState state = ON);
+	Light(LightType type, glm::vec3 position);
+	Light(LightType type, glm::vec3 position, glm::vec3 direction);
 
 	void onSubjectNotification(EventType eventType, void* object) override;
 };

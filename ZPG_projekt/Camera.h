@@ -12,7 +12,7 @@ private:
 
 	float FOV = 90;
 	float radius = 10;
-	float movementSpeed = 0.05;
+	float movementSpeed = 0.2;
 	float mouseSensitivity = 0.1;
 
 	float yaw = -90;

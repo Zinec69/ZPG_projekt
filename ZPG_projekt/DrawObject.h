@@ -44,7 +44,7 @@ private:
 
 	bool active = true;
 
-	GLuint texture;
+	GLuint texture = 0;
 
 	Material material;
 	Model* model;
