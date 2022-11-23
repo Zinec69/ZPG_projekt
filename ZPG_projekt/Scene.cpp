@@ -101,9 +101,9 @@ void Scene::onSubjectNotification(EventType eventType, void* object)
 
 			printf("Clicked on pixel %d, %d, color %02hhx%02hhx%02hhx%02hhx, depth %f, stencil index %u\n", x, y, color[0], color[1], color[2], color[3], depth, index);
 
-			//Mùeme nastavit vybrané tìleso scena->setSelect(index-1);
+			//MÅ¯Å¾eme nastavit vybranÃ© tÄ›leso scena->setSelect(index-1);
 
-			//Mùeme vypoèíst pozici v globálním souøadném systému.  
+			//MÅ¯Å¾eme vypoÄÃ­st pozici v globÃ¡lnÃ­m souÅ™adnÃ©m systÃ©mu.
 			glm::vec3 screenX = glm::vec3(x, newy, depth);
 			glm::vec4 viewPort = glm::vec4(0, 0, width, height);
 			glm::vec3 pos = glm::unProject(screenX, Camera::getInstance().getCamera(), Camera::getInstance().getPerspective(), viewPort);

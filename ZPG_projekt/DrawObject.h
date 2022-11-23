@@ -6,6 +6,7 @@
 #include "Camera.h"
 #include "Light.h"
 #include "Observer.h"
+#include "Texture.h"
 
 namespace Textures {
 	constexpr auto grass = "../ZPG_projekt/Textures/grass.png";
@@ -61,9 +62,6 @@ public:
 	void changeColor(glm::vec3 color);
 	void changeSize(float size);
 	void changeShininess(int shininess);
-	GLuint loadTexture(const char* filename);
-	GLuint loadCubemap(const char* filenames[6]);
-	GLuint loadCubemap(const char* filename);
 	void applyTextures();
 	bool isLightSource() const;
 	bool isSkyBox() const;
