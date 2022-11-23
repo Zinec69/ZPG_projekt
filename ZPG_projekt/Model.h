@@ -1,6 +1,10 @@
 #pragma once
 
 #include "GLincludes.h"
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+#include <vector>
 
 namespace Models {
 	namespace plane {
@@ -28,11 +32,20 @@ namespace Models {
 	}
 }
 
-enum class ModelType {
+enum class ModelType
+{
 	COLORED,
 	TEXTURED,
 	CUBEMAP,
 	SKYBOX,
+};
+
+struct Vertex
+{
+	float position[3];
+	float normal[3];
+	float texture[2];
+	// float tangent[3];
 };
 
 class Model
@@ -40,7 +53,9 @@ class Model
 private:
 	GLuint VAO;
 	GLuint VBO;
-	const float* vertices;
+	GLuint IBO;
+	const float* vertices = nullptr;
+	Vertex* vertices_obj = nullptr;
 	int size;
 	int num_of_vertices;
 
@@ -50,8 +65,10 @@ private:
 
 	void createVBO();
 	void createVAO();
+	void loadObj(const std::string filename);
 public:
 	Model(const float vertices[], int size, int num_of_vertices, ModelType type);
+	Model(const std::string obj_filename);
 	void draw();
 	ModelType getType();
 };

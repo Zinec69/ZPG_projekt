@@ -11,6 +11,7 @@ struct Light
     float specularStrength;
 
     float intensity;
+    float attenuation;
 
     int type;
     int state;
@@ -71,7 +72,7 @@ vec3 CalcPointLight_Blinn(Light light, vec3 normal, vec3 viewDir)
 	vec3 lightDir = normalize(light.position - FragPos);
     
     float distance    = length(light.position - FragPos);
-    float attenuation = 1.0 / (1.0 + 0.09 * distance + 0.032 * (distance * distance));
+    float attenuation = light.attenuation / (1.0 + 0.09 * distance + 0.032 * (distance * distance));
 
 	float diff   = max(dot(normal, lightDir), 0.0);
 	vec3 diffuse = diff * light.color * attenuation;
@@ -100,7 +101,7 @@ vec3 CalcSpotLight(Light light, vec3 normal, vec3 viewDir)
     float intensity = (theta - light.cutOff) / epsilon;
     
     float distance    = length(light.position - FragPos);
-    float attenuation = 1.0 / (1.0 + 0.09 * distance + 0.032 * (distance * distance));
+    float attenuation = light.attenuation / (1.0 + 0.09 * distance + 0.032 * (distance * distance));
 
     float diff   = max(dot(normal, lightDir), 0.0);
     vec3 diffuse = diff * light.color * intensity * attenuation;

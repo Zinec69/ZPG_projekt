@@ -43,10 +43,12 @@ void CallbackHandler::cursor_callback(GLFWwindow* window, double x, double y)
 void CallbackHandler::button_callback(GLFWwindow* window, int button, int action, int mode)
 {
 	if (action == GLFW_PRESS)
+	{
 		Mouse::getInstance().button_clicked = button;
+		Mouse::getInstance().notifyObservers(MouseClicked, window);
+	}
 	else
 		Mouse::getInstance().button_clicked = -1;
-	Mouse::getInstance().notifyObservers(MouseClicked, nullptr);
 }
 
 void CallbackHandler::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)

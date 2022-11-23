@@ -1,33 +1,33 @@
 #include "ShaderManager.h"
 
-ShaderManager::ShaderManager(shaderType type)
+ShaderManager::ShaderManager(ShaderType type)
 {
 	this->type = type;
 
 	switch (this->type)
 	{
-	case shaderType::LIGHT_SOURCE:
+	case ShaderType::LIGHT_SOURCE:
 		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/light_source.vert", "../ZPG_projekt/Shaders/light_source.frag");
 		break;
-	case shaderType::LAMBERT:
+	case ShaderType::LAMBERT:
 		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex.vert", "../ZPG_projekt/Shaders/lambert.frag");
 		break;
-	case shaderType::PHONG:
+	case ShaderType::PHONG:
 		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex.vert", "../ZPG_projekt/Shaders/phong.frag");
 		break;
-	case shaderType::PHONG_1:
+	case ShaderType::PHONG_1:
 		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex.vert", "../ZPG_projekt/Shaders/phong_1.frag");
 		break;
-	case shaderType::BLINN:
+	case ShaderType::BLINN:
 		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex.vert", "../ZPG_projekt/Shaders/blinn.frag");
 		break;
-	case shaderType::MULTIPLE_LIGHTS:
+	case ShaderType::MULTIPLE_LIGHTS:
 		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex.vert", "../ZPG_projekt/Shaders/multiple_lights.frag");
 		break;
-	case shaderType::MULTIPLE_LIGHTS_TEX:
+	case ShaderType::MULTIPLE_LIGHTS_TEX:
 		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/vertex_tex.vert", "../ZPG_projekt/Shaders/multiple_lights_tex.frag");
 		break;
-	case shaderType::SKYBOX:
+	case ShaderType::SKYBOX:
 		this->shaderProgram = loadShader("../ZPG_projekt/Shaders/cubemap.vert", "../ZPG_projekt/Shaders/cubemap.frag");
 		break;
 	}
@@ -35,6 +35,8 @@ ShaderManager::ShaderManager(shaderType type)
 	this->projectionMat = Camera::getInstance().getPerspective();
 	this->cameraPosition = Camera::getInstance().getPosition();
 	this->viewMat = Camera::getInstance().getCamera();
+
+	Camera::getInstance().registerObserver(*this);
 
 	pollInfoLogs();
 }
@@ -119,11 +121,11 @@ void ShaderManager::setCameraData()
 {
 	setMat(this->viewMat, "view");
 	setMat(this->projectionMat, "projection");
-	if (this->type != shaderType::LIGHT_SOURCE && this->type != shaderType::SKYBOX)
+	if (this->type != ShaderType::LIGHT_SOURCE && this->type != ShaderType::SKYBOX)
 		setVec3(this->cameraPosition, "viewPos");
 }
 
-shaderType ShaderManager::getType()
+ShaderType ShaderManager::getType()
 {
 	return this->type;
 }
