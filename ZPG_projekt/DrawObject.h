@@ -61,6 +61,7 @@ public:
 	void move(glm::vec3 point);
 	void changeColor(glm::vec3 color);
 	void changeSize(float size);
+	void changeShininess(int shininess);
 	void applyTextures();
 	bool isLightSource() const;
 	bool isSkyBox() const;

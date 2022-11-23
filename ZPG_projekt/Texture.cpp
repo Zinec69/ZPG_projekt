@@ -28,8 +28,8 @@ GLuint Texture::getTexture(std::string filepath)
 
 	if (textures.find(filepath) == textures.end())
 		loadTexture(filepath);
-	else
-		id = textures.at(filepath);
+	
+	id = textures.at(filepath);
 
 	return id;
 }
@@ -40,8 +40,8 @@ GLuint Texture::getTexture(std::vector<std::string> filepaths)
 
 	if (textures.find(filepaths.at(0)) == textures.end())
 		loadCubemap(filepaths);
-	else
-		id = textures.at(filepaths.at(0));
+	
+	id = textures.at(filepaths.at(0));
 
 	return id;
 }

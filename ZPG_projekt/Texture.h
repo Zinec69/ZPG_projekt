@@ -7,7 +7,7 @@
 class Texture
 {
 private:
-	Texture();
+	Texture() {};
 	void loadTexture(std::string filepath);
 	void loadCubemap(std::vector<std::string> filepaths);
 	std::map<std::string, GLuint> textures = std::map<std::string, GLuint>();

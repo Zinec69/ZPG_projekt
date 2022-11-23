@@ -15,19 +15,17 @@ DrawObject::DrawObject(Model* model, ShaderManager* shader, const char* texture_
 	this->shader = shader;
 	this->scale = scale;
 	this->object = glm::translate(glm::mat4{ 1.0 }, position);
-	if (model->getType() == ModelType::CUBEMAP)
-		this->texture = loadCubemap(texture_filename);
-	else
-		this->texture = loadTexture(texture_filename);
+	this->texture = Texture::getInstance().getTexture(texture_filename);
 }
 
-DrawObject::DrawObject(Model* model, ShaderManager* shader, std::vector<std::string> texture_filenames, float scale)
+DrawObject::DrawObject(Model* model, ShaderManager* shader, const char* texture_filenames[6], float scale)
 {
 	this->model = model;
 	this->shader = shader;
 	this->scale = scale;
 	this->object = glm::translate(glm::mat4{ 1.0 }, glm::vec3(0.0));
-	this->texture = Texture::getInstance().getTexture(texture_filenames);
+	std::vector<std::string> textures = { texture_filenames[0], texture_filenames[1], texture_filenames[2], texture_filenames[3], texture_filenames[4], texture_filenames[5] };
+	this->texture = Texture::getInstance().getTexture(textures);
 }
 
 void DrawObject::draw(std::vector<Light*> lights)
