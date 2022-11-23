@@ -21,13 +21,13 @@ DrawObject::DrawObject(Model* model, ShaderManager* shader, const char* texture_
 		this->texture = loadTexture(texture_filename);
 }
 
-DrawObject::DrawObject(Model* model, ShaderManager* shader, const char* texture_filenames[6], float scale)
+DrawObject::DrawObject(Model* model, ShaderManager* shader, std::vector<std::string> texture_filenames, float scale)
 {
 	this->model = model;
 	this->shader = shader;
 	this->scale = scale;
 	this->object = glm::translate(glm::mat4{ 1.0 }, glm::vec3(0.0));
-	this->texture = loadCubemap(texture_filenames);
+	this->texture = Texture::getInstance().getTexture(texture_filenames);
 }
 
 void DrawObject::draw(std::vector<Light*> lights)
@@ -145,39 +145,6 @@ bool DrawObject::isSkyBox() const
 bool DrawObject::isActive() const
 {
 	return this->active;
-}
-
-GLuint DrawObject::loadTexture(const char* filename)
-{
-	GLuint image = SOIL_load_OGL_texture(filename, SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
-	if (image == 0)
-	{
-		std::cout << "An error occurred while loading texture image\n";
-		exit(EXIT_FAILURE);
-	}
-	return image;
-}
-
-GLuint DrawObject::loadCubemap(const char* filenames[6])
-{
-	GLuint image = SOIL_load_OGL_cubemap(filenames[0], filenames[1], filenames[2], filenames[3], filenames[4], filenames[5], SOIL_LOAD_RGB, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS);
-	if (image == 0)
-	{
-		std::cout << "An error occurred while loading multi-file cubemap texture\n";
-		exit(EXIT_FAILURE);
-	}
-	return image;
-}
-
-GLuint DrawObject::loadCubemap(const char* filename)
-{
-	GLuint image = SOIL_load_OGL_single_cubemap(filename, SOIL_DDS_CUBEMAP_FACE_ORDER, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS);
-	if (image == 0)
-	{
-		std::cout << "An error occurred while loading single-file cubemap texture\n";
-		exit(EXIT_FAILURE);
-	}
-	return image;
 }
 
 void DrawObject::applyTextures()

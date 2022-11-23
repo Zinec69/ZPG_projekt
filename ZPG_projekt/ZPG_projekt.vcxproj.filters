@@ -180,6 +180,9 @@
     <ClInclude Include="..\Libraries\SOIL2\wfETC.h">
       <Filter>Resource Files\SOIL2</Filter>
     </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -250,6 +253,9 @@
     </ClCompile>
     <ClCompile Include="..\Libraries\SOIL2\wfETC.c">
       <Filter>Resource Files\SOIL2</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
