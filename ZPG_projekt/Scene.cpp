@@ -13,7 +13,9 @@ void Scene::render()
 
 	for (int i = 0; i < this->objects.size(); i++)
 	{
-		glStencilFunc(GL_ALWAYS, i+1, 0xFF);
+		auto object = this->objects.begin();
+		std::advance(object, i);
+		glStencilFunc(GL_ALWAYS, object->first, 0xFF);
 
 		if (this->objects[i]->isSkyBox() && i > 0)
 		{
@@ -29,12 +31,28 @@ void Scene::render()
 
 void Scene::addObject(DrawObject* object)
 {
-	this->objects.push_back(object);
+	int id = 0;
+	for (int i = 0; i < this->objects.size(); i++)
+	{
+		auto object = this->objects.begin();
+		std::advance(object, i);
+		if (object->first > id + 1)
+		{
+			id += 1;
+			break;
+		}
+	}
+	this->objects.insert(std::pair<int, DrawObject*>(id, object));
 }
 
-void Scene::setObjects(std::vector<DrawObject*> objects)
+void Scene::setObjects(std::map<int, DrawObject*> objects)
 {
 	this->objects = objects;
+}
+
+void Scene::removeObject(int id)
+{
+	this->objects.erase(id);
 }
 
 void Scene::addLight(Light* light)
@@ -81,11 +99,11 @@ void Scene::onSubjectNotification(EventType eventType, void* object)
 {
 	if (eventType == MouseClicked)
 	{
-		if (Mouse::getInstance().button_clicked != GLFW_MOUSE_BUTTON_LEFT)
+		if (Mouse::getInstance().button_clicked == GLFW_MOUSE_BUTTON_RIGHT)
 		{
 			GLbyte color[4];
 			GLfloat depth;
-			GLuint index;
+			GLuint object_id;
 
 			int width, height;
 			glfwGetFramebufferSize(static_cast<GLFWwindow*>(object), &width, &height);
@@ -97,9 +115,9 @@ void Scene::onSubjectNotification(EventType eventType, void* object)
 
 			glReadPixels(x, newy, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
 			glReadPixels(x, newy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-			glReadPixels(x, newy, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
+			glReadPixels(x, newy, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &object_id);
 
-			printf("Clicked on pixel %d, %d, color %02hhx%02hhx%02hhx%02hhx, depth %f, stencil index %u\n", x, y, color[0], color[1], color[2], color[3], depth, index);
+			printf("Clicked on pixel %d, %d, color %02hhx%02hhx%02hhx%02hhx, depth %f, stencil index %u\n", x, y, color[0], color[1], color[2], color[3], depth, object_id);
 
 			//Můžeme nastavit vybrané těleso scena->setSelect(index-1);
 
@@ -110,10 +128,44 @@ void Scene::onSubjectNotification(EventType eventType, void* object)
 
 			printf("unProject [%f, %f, %f]\n", pos.x, pos.y, pos.z);
 
-			if (index > 1)
+			if (object_id > 1)
 			{
 				DrawObject* tree = new DrawObject(getModel("tree"), getShader(ShaderType::MULTIPLE_LIGHTS_TEX), "Textures/tree_1.png", 0.75, glm::vec3(pos.x, pos.y, pos.z));
 				addObject(tree);
+			}
+		}
+		if (Mouse::getInstance().button_clicked == GLFW_MOUSE_BUTTON_MIDDLE)
+		{
+			GLbyte color[4];
+			GLfloat depth;
+			GLuint object_id;
+
+			int width, height;
+			glfwGetFramebufferSize(static_cast<GLFWwindow*>(object), &width, &height);
+
+			GLint x = (GLint)Mouse::getInstance().x;
+			GLint y = (GLint)Mouse::getInstance().y;
+
+			int newy = height - y;
+
+			glReadPixels(x, newy, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
+			glReadPixels(x, newy, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+			glReadPixels(x, newy, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &object_id);
+
+			printf("Clicked on pixel %d, %d, color %02hhx%02hhx%02hhx%02hhx, depth %f, stencil index %u\n", x, y, color[0], color[1], color[2], color[3], depth, object_id);
+
+			//Můžeme nastavit vybrané těleso scena->setSelect(index-1);
+
+			//Můžeme vypočíst pozici v globálním souřadném systému.
+			glm::vec3 screenX = glm::vec3(x, newy, depth);
+			glm::vec4 viewPort = glm::vec4(0, 0, width, height);
+			glm::vec3 pos = glm::unProject(screenX, Camera::getInstance().getCamera(), Camera::getInstance().getPerspective(), viewPort);
+
+			printf("unProject [%f, %f, %f]\n", pos.x, pos.y, pos.z);
+
+			if (object_id > 1)
+			{
+				removeObject(object_id);
 			}
 		}
 	}

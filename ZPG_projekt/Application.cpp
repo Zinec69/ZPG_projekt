@@ -78,7 +78,7 @@ void Application::run()
 	point_1.registerObserver(*sun);
 
 	std::vector<Light*> lights = { &point_1, &spot_1, &dir_1 };
-	std::vector<DrawObject*> objects = { skybox, terrain, house, zombie, tree, sun };
+	std::map<int, DrawObject*> objects = { {0, skybox}, {1, terrain}, {2, house}, {3, zombie}, {4, tree}, {5, sun} };
 
 	scene1->setLights(lights);
 	scene1->setObjects(objects);
