@@ -2,7 +2,7 @@
 
 GLFWwindow* Window::window = nullptr;
 
-Window::Window(int width, int height, const char* name)
+void Window::init(int width, int height, const char* name)
 {
 	this->width = width;
 	this->height = height;

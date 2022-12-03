@@ -30,9 +30,8 @@ DrawObject::DrawObject(Model* model, ShaderManager* shader, const char* texture_
 
 void DrawObject::draw(std::vector<Light*> lights)
 {
-	//if (this->model->getType() == CUBEMAP)
-	//	glDepthMask(GL_FALSE);
-
+	//if (this->texture == Texture::getInstance().getTexture("Textures/tree_1.png"))
+	//	rotate(10, glm::vec3(0, 1, 0), glm::vec3(2, 0, 0));
 	this->shader->useProgram();
 
 	this->shader->setCameraData();
@@ -88,9 +87,6 @@ void DrawObject::draw(std::vector<Light*> lights)
 		this->shader->setVec3(lights[0]->color, "lightColor");
 
 	this->model->draw();
-
-	//if (this->model->getType() == CUBEMAP)
-	//	glDepthMask(GL_TRUE);
 }
 
 void DrawObject::rotate(float angle, glm::vec3 axis)

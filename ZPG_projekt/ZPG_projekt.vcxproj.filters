@@ -257,6 +257,9 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Libraries\SOIL2\image_helper.c">
+      <Filter>Resource Files\SOIL2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="..\Libraries\glew-2.2.0\bin\Release\x64\glew32.dll">

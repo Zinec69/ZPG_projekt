@@ -11,7 +11,6 @@
 class Application
 {
 private:
-	Window* window;
 	std::vector<DrawObject*> drawObjects;
 	std::map<int, Scene*> scenes;
 	int currentScene;

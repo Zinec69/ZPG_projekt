@@ -75,13 +75,13 @@ void Camera::changeTarget()
 
 		if (Mouse::getInstance().button_clicked == GLFW_MOUSE_BUTTON_LEFT)
 		{
-			Window::lockCursor();
+			Window::getInstance().lockCursor();
 
 			this->yaw += x_offset;
 			this->pitch += y_offset;
 		}
 		else
-			Window::unlockCursor();
+			Window::getInstance().unlockCursor();
 
 		if (this->pitch > 89.0f)
 			this->pitch = 89.0f;

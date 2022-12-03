@@ -8,7 +8,7 @@ Application::Application(int windowWidth, int windowHeight)
 		exit(EXIT_FAILURE);
 	}
 
-	this->window = new Window(windowWidth, windowHeight, "ZPG");
+	Window::getInstance().init(windowWidth, windowHeight, "ZPG");
 
 	glewExperimental = GL_TRUE;
 	glewInit();
@@ -22,7 +22,7 @@ void Application::run()
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	ImGui::StyleColorsDark();
-	this->window->initImgui();
+	Window::getInstance().initImgui();
 	ImGui_ImplOpenGL3_Init("#version 330");
 
 	float x_rot = 0, y_rot = 0, tri_rot = 0, light_rot = 0;
@@ -85,7 +85,7 @@ void Application::run()
 
 	addScene(scene1, 1);
 
-	while (!this->window->shouldClose())
+	while (!Window::getInstance().shouldClose())
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
@@ -154,7 +154,7 @@ void Application::run()
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-		this->window->swapBuffers();
+		Window::getInstance().swapBuffers();
 		glfwPollEvents();
 
 		tri_rot--;
