@@ -17,32 +17,23 @@ void Scene::render()
 		std::advance(object, i);
 		glStencilFunc(GL_ALWAYS, object->first, 0xFF);
 
-		if (this->objects[i]->isSkyBox() && i > 0)
+		if (object->second->isSkyBox() && i > 0)
 		{
 			fprintf(stderr, "SkyBox must be the first object to render\n");
 			exit(EXIT_FAILURE);
 		}
-		if (!this->objects[i]->isActive())
+		if (!object->second->isActive())
 			continue;
 		
-		this->objects[i]->draw(this->lights);
+		object->second->draw(this->lights);
 	}
 }
 
 void Scene::addObject(DrawObject* object)
 {
-	int id = 0;
-	for (int i = 0; i < this->objects.size(); i++)
-	{
-		auto object = this->objects.begin();
-		std::advance(object, i);
-		if (object->first > id + 1)
-		{
-			id += 1;
-			break;
-		}
-	}
-	this->objects.insert(std::pair<int, DrawObject*>(id, object));
+	auto _object = this->objects.begin();
+	std::advance(_object, this->objects.size() - 1);
+	this->objects.insert(std::pair<int, DrawObject*>(_object->first + 1, object));
 }
 
 void Scene::setObjects(std::map<int, DrawObject*> objects)
@@ -128,13 +119,13 @@ void Scene::onSubjectNotification(EventType eventType, void* object)
 
 			printf("unProject [%f, %f, %f]\n", pos.x, pos.y, pos.z);
 
-			if (object_id > 1)
+			if (object_id > 0)
 			{
 				DrawObject* tree = new DrawObject(getModel("tree"), getShader(ShaderType::MULTIPLE_LIGHTS_TEX), "Textures/tree_1.png", 0.75, glm::vec3(pos.x, pos.y, pos.z));
 				addObject(tree);
 			}
 		}
-		if (Mouse::getInstance().button_clicked == GLFW_MOUSE_BUTTON_MIDDLE)
+		else if (Mouse::getInstance().button_clicked == GLFW_MOUSE_BUTTON_MIDDLE)
 		{
 			GLbyte color[4];
 			GLfloat depth;
@@ -163,7 +154,7 @@ void Scene::onSubjectNotification(EventType eventType, void* object)
 
 			printf("unProject [%f, %f, %f]\n", pos.x, pos.y, pos.z);
 
-			if (object_id > 1)
+			if (object_id > 0)
 			{
 				removeObject(object_id);
 			}
