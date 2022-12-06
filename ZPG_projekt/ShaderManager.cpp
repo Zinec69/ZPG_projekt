@@ -121,7 +121,7 @@ void ShaderManager::setCameraData()
 {
 	setMat(this->viewMat, "view");
 	setMat(this->projectionMat, "projection");
-	if (this->type != ShaderType::LIGHT_SOURCE && this->type != ShaderType::SKYBOX)
+	if (this->type != ShaderType::LIGHT_SOURCE && this->type != ShaderType::SKYBOX && this->type != ShaderType::LAMBERT)
 		setVec3(this->cameraPosition, "viewPos");
 }
 

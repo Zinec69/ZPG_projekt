@@ -108,7 +108,7 @@ void DrawObject::resize(glm::vec3 multiplier)
 
 void DrawObject::move(glm::vec3 point)
 {
-	this->object = glm::translate(glm::mat4{ 1.0 }, point);
+	this->object = glm::translate(this->object, point);
 }
 
 void DrawObject::changeColor(glm::vec3 color)

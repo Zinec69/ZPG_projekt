@@ -24,7 +24,7 @@ private:
 												sin(glm::radians(yaw)) * cos(glm::radians(pitch))));
 	glm::vec3 up{ 0.f, 1.f, 0.f };
 
-	glm::mat4 perspective = glm::perspective(glm::radians(FOV), (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 100.0f);
+	glm::mat4 perspective = glm::perspective(glm::radians(FOV), (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 200.0f);
 	glm::mat4 lookAt = glm::lookAt(eye, target + eye, up);
 
 	int mouse_last_x = WINDOW_WIDTH / 2;

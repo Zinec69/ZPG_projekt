@@ -96,9 +96,12 @@ vec3 CalcSpotLight(Light light, vec3 normal, vec3 viewDir)
     vec3 ambient  = light.ambientStrength * light.color;
     vec3 lightDir = normalize(light.position - FragPos);
     
-    float theta     = dot(lightDir, normalize(-light.direction));
-    float epsilon   = 1 - light.cutOff;
-    float intensity = (theta - light.cutOff) / epsilon;
+//    float theta     = dot(lightDir, normalize(-light.direction));
+//    float epsilon   = 1 - light.cutOff;
+//    float intensity = (theta - light.cutOff) / epsilon;
+    float theta = dot(lightDir, normalize(-light.direction)); 
+    float epsilon = light.cutOff - light.cutOff * 0.9;
+    float intensity = clamp((theta - light.cutOff) / epsilon, 0.0, 1.0);
     
     float distance    = length(light.position - FragPos);
     float attenuation = light.attenuation / (1.0 + 0.09 * distance + 0.032 * (distance * distance));

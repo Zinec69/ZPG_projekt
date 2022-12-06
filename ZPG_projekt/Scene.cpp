@@ -24,6 +24,12 @@ void Scene::render()
 		}
 		if (!object->second->isActive())
 			continue;
+
+		if (i == this->objects.size() - 1 && !this->objects[i]->isLightSource())
+		{
+			this->objects[i]->move(glm::vec3(1, 0, 0));
+			this->objects[i]->rotate(2, glm::vec3(0, 1, 1), glm::vec3(1, 0, 0));
+		}
 		
 		object->second->draw(this->lights);
 	}
@@ -121,8 +127,8 @@ void Scene::onSubjectNotification(EventType eventType, void* object)
 
 			if (object_id > 0)
 			{
-				DrawObject* tree = new DrawObject(getModel("tree"), getShader(ShaderType::MULTIPLE_LIGHTS_TEX), "Textures/tree_1.png", 0.75, glm::vec3(pos.x, pos.y, pos.z));
-				addObject(tree);
+				DrawObject* tree = new DrawObject(this->getModel("tree"), this->getShader(ShaderType::MULTIPLE_LIGHTS_TEX), "Textures/tree_1.png", 0.75, glm::vec3(pos.x, pos.y, pos.z));
+				this->addObject(tree);
 			}
 		}
 		else if (Mouse::getInstance().button_clicked == GLFW_MOUSE_BUTTON_MIDDLE)
