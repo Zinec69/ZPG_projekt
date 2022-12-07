@@ -61,7 +61,7 @@ vec3 CalcPointLight_Phong(Light light, vec3 normal, vec3 viewDir)
 
     if (_dot >= 0.0)
     {
-        float spec = pow(max(_dot, 0.0), material.shininess);
+        float spec = pow(_dot, material.shininess);
 	    specular = light.specularStrength * spec * light.color * vec3(texture(material.specular, TexCoords));
     }
 
@@ -86,7 +86,7 @@ vec3 CalcPointLight_Blinn(Light light, vec3 normal, vec3 viewDir)
 
     if (_dot >= 0.0)
     {
-        float spec = pow(max(_dot, 0.0), material.shininess);
+        float spec = pow(_dot, material.shininess);
         specular = light.specularStrength * spec * light.color * attenuation * vec3(texture(material.specular, TexCoords));
     }
     
@@ -134,7 +134,7 @@ vec3 CalcDirectLight(Light light, vec3 normal, vec3 viewDir)
 
     if (_dot >= 0.0)
     {
-        float spec = pow(max(_dot, 0.0), material.shininess);
+        float spec = pow(_dot, material.shininess);
         specular = light.specularStrength * spec * light.color * vec3(texture(material.specular, TexCoords));
     }
     
